@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         inputs = new bool[4];
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         Vector2 inputDirection = Vector2.zero;
         if (inputs[0])
@@ -27,9 +27,9 @@ public class Player : MonoBehaviour
         if (inputs[1])
             inputDirection.y -= 1;
         if (inputs[2])
-            inputDirection.x += 1;
-        if (inputs[3])
             inputDirection.x -= 1;
+        if (inputs[3])
+            inputDirection.x += 1;
 
         Move(inputDirection);
     }

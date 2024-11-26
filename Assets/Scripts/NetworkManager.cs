@@ -21,6 +21,9 @@ public class NetworkManager : MonoBehaviour
 
     private void Start() // 서버 시작 
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+
         #if UNITY_EDITOR    // 유니티 에디터에서 실행을 했을 때
         Debug.Log("Build the project to start the server!!!");
         #else               // 빌드된 프로젝트(게임 서버)에서 실행을 했을 떄
