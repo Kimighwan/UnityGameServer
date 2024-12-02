@@ -24,15 +24,17 @@ public class NetworkManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
-        #if UNITY_EDITOR    // 유니티 에디터에서 실행을 했을 때
-        Debug.Log("Build the project to start the server!!!");
-        #else               // 빌드된 프로젝트(게임 서버)에서 실행을 했을 떄
         Server.Start(50, 26950);
-        #endif
     }
+
+    private void OnApplicationQuit()
+    {
+        Server.Stop();
+    }
+
 
     public Player InstantiatePlayer()
     {
-        return Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+        return Instantiate(playerPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();
     }
 }

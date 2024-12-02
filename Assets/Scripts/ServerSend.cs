@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ServerSend
@@ -106,5 +107,35 @@ public class ServerSend
         }
     }
 
+    public static void PlayerDisconnected(int playerId)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.playerDisconnected))
+        {
+            packet.Write(playerId);
+
+            SendTCPDataToAll(packet);
+        }
+    }
+
+    public static void PlayerHP(Player player)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.playerHP))
+        {
+            packet.Write(player.id);
+            packet.Write(player.hp);
+
+            SendTCPDataToAll(packet);
+        }
+    }
+
+    public static void PlayerReSpawned(Player player)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.playerReSpawned))
+        {
+            packet.Write(player.id);
+
+            SendTCPDataToAll(packet);
+        }
+    }
     #endregion
 }

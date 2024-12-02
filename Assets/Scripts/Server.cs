@@ -119,7 +119,14 @@ public class Server
             {
                 {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
+                {(int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
             };
         Debug.Log("Init Packet");
+    }
+
+    public static void Stop()
+    {
+        tcpListener.Stop();
+        tudpListener.Close();
     }
 }
