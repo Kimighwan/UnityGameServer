@@ -7,6 +7,8 @@ public class NetworkManager : MonoBehaviour
     public static NetworkManager instance;
 
     public GameObject playerPrefab;
+    public GameObject projectilePrefab;
+
     private void Awake() // 초기화 생명 주기 함수
     {
         if (instance == null) // 아직 만들어지지 않았다면 현재 객체 할당
@@ -36,5 +38,10 @@ public class NetworkManager : MonoBehaviour
     public Player InstantiatePlayer()
     {
         return Instantiate(playerPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();
+    }
+
+    public Projectile InstantiateProjectile(Transform shootOrigin)
+    {
+        return Instantiate(projectilePrefab, shootOrigin.position + shootOrigin.forward * 0.7f, Quaternion.identity).GetComponent<Projectile>();
     }
 }

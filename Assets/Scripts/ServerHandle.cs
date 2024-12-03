@@ -37,4 +37,11 @@ public class ServerHandle
 
         Server.clients[fromClient].player.Shoot(shootDirection);
     }
+
+    public static void PlayerThrowItem(int fromClient, Packet packet)
+    {
+        Vector3 throwDirection = packet.ReadVector3();
+
+        Server.clients[fromClient].player.ThrowItem(throwDirection);
+    }
 }

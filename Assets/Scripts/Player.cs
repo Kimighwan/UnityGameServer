@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
+    public float throwForce = 600f;
     public float hp;
     public float maxHP = 100f;
     public int itemAmount = 0;
@@ -81,12 +82,26 @@ public class Player : MonoBehaviour
     
     public void Shoot(Vector3 viewDirection)
     {
+        if (hp <= 0f) return;
+
         if(Physics.Raycast(shootOrigin.position, viewDirection, out RaycastHit hit, 25f))
         {
             if(hit.collider.CompareTag("Player"))
             {
                 hit.collider.GetComponent<Player>().TakeDamage(50f);
             }
+        }
+    }
+
+    public void ThrowItem(Vector3 viewDircret)
+    {
+        if (hp <= 0f)
+            return;
+
+        if(itemAmount > 0)
+        {
+            itemAmount--;
+            NetworkManager.instance.InstantiateProjectile(shootOrigin).Initialize(viewDircret, throwForce, id);
         }
     }
 

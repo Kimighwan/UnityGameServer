@@ -170,5 +170,39 @@ public class ServerSend
             SendTCPDataToAll(packet);
         }
     }
+
+    public static void SpawnProjectile(Projectile projectile, int throwByPlayer)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.spawnProjectile))
+        {
+            packet.Write(projectile.id);
+            packet.Write(projectile.transform.position);
+            packet.Write(throwByPlayer);
+
+            SendTCPDataToAll(packet);
+        }
+    }
+
+    public static void ProjectilePosition(Projectile projectile)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.projectilePostion))
+        {
+            packet.Write(projectile.id);
+            packet.Write(projectile.transform.position);
+
+            SendTCPDataToAll(packet);
+        }
+    }
+
+    public static void ProjectileExploded(Projectile projectile)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.projectileExploded))
+        {
+            packet.Write(projectile.id);
+            packet.Write(projectile.transform.position);
+
+            SendTCPDataToAll(packet);
+        }
+    }
     #endregion
 }
