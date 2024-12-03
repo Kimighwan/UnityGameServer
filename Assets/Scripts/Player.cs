@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public float jumpSpeed = 5f;
     public float hp;
     public float maxHP = 100f;
+    public int itemAmount = 0;
+    public int maxItemAmount = 3;
 
     private bool[] inputs;
     private float yVelocity = 0; // 플레이어 수직 속도 저장
@@ -114,5 +116,16 @@ public class Player : MonoBehaviour
         hp = maxHP;
         controller.enabled = true;
         ServerSend.PlayerReSpawned(this);
+    }
+
+    public bool AttempPickUpItem()
+    {
+        if(itemAmount >= maxItemAmount) // 이미 플레이어가 최대 아이템 갯수를 가지고 있어서 false를 반환
+        {
+            return false;
+        }
+
+        itemAmount++;
+        return true;
     }
 }
