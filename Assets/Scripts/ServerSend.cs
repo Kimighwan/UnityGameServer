@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+// 네트워크를 통해 다양한 패킷을 생성하여 전송을 정의하는 클래스
+
 public class ServerSend
 {
+    // 아래의 Send 메서드 들은 전송할 패킷을을 준비하는 메소드
+    // 클라이언트 버퍼에 전달받은 패킷 데이터를 저장
+
     private static void SendTCPData(int toClient, Packet packet)
     {
         packet.WriteLength();
@@ -60,6 +65,8 @@ public class ServerSend
     }
 
     #region Packet
+    // 패킷에 데이터를 입력
+    // 위의 전송 메서드를 통해서 전송
 
     public static void Welcome(int toClient, string m) // 매개변수 => 어떤 클라이언트, 메세지 
     {

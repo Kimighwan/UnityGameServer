@@ -10,10 +10,10 @@ public class ServerHandle
         int clientChk = packet.ReadInt();
         string userName = packet.ReadString();
 
-        Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} connected sucessfully and is now Player {fromClient}.");
+        Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} 성공적으로 연결완료! / Player {fromClient}.");
         if (fromClient != clientChk)
         {
-            Debug.Log($"Player \"{userName}\" (ID: {fromClient}) has wrong client ID ({clientChk})");
+            Debug.Log($"Player \"{userName}\" (ID: {fromClient})는 잘못된 ID를 가진다 ({clientChk})");
         }
         Server.clients[fromClient].SendIntToGame(userName);
     }

@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (hp <= 0f) return;
+        if (hp <= 0f) return; // 여기에 시간 종료, 아직 상대방이 안들어 옴을 체크하는 변수 넣기
 
         Vector2 inputDirection = Vector2.zero;
         if (inputs[0])

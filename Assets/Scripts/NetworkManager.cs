@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviour
 {
-    public static NetworkManager instance;
+    public static NetworkManager instance; // 해당 스크립트 객체를 참조하는 전역 변수
 
-    public GameObject playerPrefab;
-    public GameObject projectilePrefab;
+    public GameObject playerPrefab; // 플레이어 객체
+    public GameObject projectilePrefab; // 슈루탄 객체
 
-    private void Awake() // 초기화 생명 주기 함수
+    private void Awake() // 유니티 엔진의 생명 주기 함수 -> 게임 실행시 초기에 한 번 실행되는 함수
     {
         if (instance == null) // 아직 만들어지지 않았다면 현재 객체 할당
         {
@@ -17,7 +17,7 @@ public class NetworkManager : MonoBehaviour
         }
         else if (instance != this) // 이미 존재한다면 현재 객체 삭제
         {
-            Destroy(this);
+            Destroy(this); // 삭제
         }
     }
 
@@ -26,7 +26,8 @@ public class NetworkManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
-        Server.Start(50, 26950);
+        Server.Start(2, 33374); // 사용되지 않는 포트 번호로 서버 열기, 플레이어 수는 2명
+                                // https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers 참고
     }
 
     private void OnApplicationQuit()

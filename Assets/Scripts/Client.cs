@@ -5,11 +5,11 @@ using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
 
-public class Client
+public class Client // 클라이언트 정보를 저장하는 클래스
 {
-    public int clientId;
-    public TCP tcp;
-    public UDP udp;
+    public int clientId; // 클라이언트 ID
+    public TCP tcp; // tcp 소켓 클래스 아래에서 직접 생성
+    public UDP udp; // udp 소켓 클래스 아래에서 직접 생성
     public static int bufferSize = 4096;
     public Player player;
 
@@ -22,31 +22,32 @@ public class Client
 
     public class TCP
     {
-        public TcpClient socket;
+        public TcpClient socket; // 연결을 통해 얻는 TCP 클라이언트 소켓
 
         private readonly int id;
         private NetworkStream stream;
         private Packet receiveData;
-        private byte[] receiveBuffer;
+        private byte[] receiveBuffer; // 수신받을 데이터를 바이트 단위로 받는 버퍼
 
         public TCP(int _id)
         {
             id = _id;
         }
 
-        public void Connect(TcpClient _socket)
+        public void Connect(TcpClient _socket) // Server소켓을 통해 연결된 클라이언트를 매개변수로 받아 소켓에 할당
         {
             socket = _socket;
-            socket.ReceiveBufferSize = bufferSize;
-            socket.SendBufferSize = bufferSize;
+            socket.ReceiveBufferSize = bufferSize; // 수신 버퍼 크기 초기화
+            socket.SendBufferSize = bufferSize;    // 송신버퍼 크기 초기화
 
-            stream = socket.GetStream();
+            stream = socket.GetStream(); // 클라이언트로 부터 메세지를 받는다.
 
             receiveData = new Packet();
 
             receiveBuffer = new byte[bufferSize];
 
-            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null);
+            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null); // NetworkStream 메소드를 통해 읽는다
+                                                                                   // 읽은 결과를 비동기 콜백 함수로 넘긴다.
 
             ServerSend.Welcome(id, "Welcom Server!!!");
         }
@@ -58,7 +59,7 @@ public class Client
             {
                 if (socket != null)
                 {
-                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // 스트림을 읽음
                 }
             }
             catch (Exception m)
@@ -72,7 +73,7 @@ public class Client
         {
             try
             {
-                int byteLength = stream.EndRead(_result);
+                int byteLength = stream.EndRead(_result); // 스트림에서 읽은 바이트 수를 저장한다
                 if (byteLength <= 0)
                 {
                     Server.clients[id].Disconnect();
@@ -80,7 +81,7 @@ public class Client
                 }
 
                 byte[] data = new byte[byteLength];
-                Array.Copy(receiveBuffer, data, byteLength);
+                Array.Copy(receiveBuffer, data, byteLength); // 스트림 내용을 복사한다.
 
                 receiveData.Reset(HandleData(data));
 
@@ -169,7 +170,7 @@ public class Client
 
         public void HandleData(Packet packet)
         {
-            int packetLength = packet.ReadInt();
+            int packetLength = packet.ReadInt(); // 패킷 길이
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
             ThreadManager.ExecuteOnMainThread(() =>
@@ -177,7 +178,7 @@ public class Client
                 using (Packet packet = new Packet(packetBytes))
                 {
                     int packetId = packet.ReadInt();
-                    Server.packetHandlers[packetId](id, packet);
+                    Server.packetHandlers[packetId](id, packet); // ID에 맞는 적절한 패킷 처리 메서드 호출
                 }
             });
         }

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-/// <summary>Sent from server to client.</summary>
+// int형 데이터를 그냥 보낼 수 없다.
+// 데이터 유형을 패킷 클래스로 통해 바이트로 변환하여 송수신 한다
+
+
 public enum ServerPackets
 {
     welcome = 1,
@@ -31,35 +34,30 @@ public enum ClientPackets
     playerThrowItem,
 }
 
-public class Packet : IDisposable
+public class Packet : IDisposable 
 {
     private List<byte> buffer;
     private byte[] readableBuffer;
-    private int readPos;
+    private int readPos; // 아래에서 데이터를 쓰거나 읽을 때 데이터 크기에 맞게 크기를 더하거나 빼준다.
 
-    /// <summary>Creates a new empty packet (without an ID).</summary>
-    public Packet()
+    public Packet() // 디폴트 생성자
     {
-        buffer = new List<byte>(); // Intitialize buffer
-        readPos = 0; // Set readPos to 0
+        buffer = new List<byte>(); // 버퍼 초기화
+        readPos = 0; // 읽을 위치를 0으로 설정
     }
 
-    /// <summary>Creates a new packet with a given ID. Used for sending.</summary>
-    /// <param name="_id">The packet ID.</param>
-    public Packet(int _id)
+    public Packet(int _id) // ID를 받는 생성자
     {
-        buffer = new List<byte>(); // Intitialize buffer
-        readPos = 0; // Set readPos to 0
+        buffer = new List<byte>();
+        readPos = 0;
 
-        Write(_id); // Write packet id to the buffer
+        Write(_id); // 버퍼에 id를 저장
     }
 
-    /// <summary>Creates a packet from which data can be read. Used for receiving.</summary>
-    /// <param name="_data">The bytes to add to the packet.</param>
-    public Packet(byte[] _data)
+    public Packet(byte[] _data) // byte 단위 데이터를 받는 생성자
     {
-        buffer = new List<byte>(); // Intitialize buffer
-        readPos = 0; // Set readPos to 0
+        buffer = new List<byte>();
+        readPos = 0;
 
         SetBytes(_data);
     }
@@ -122,66 +120,57 @@ public class Packet : IDisposable
     }
     #endregion
 
-    #region Write Data
-    /// <summary>Adds a byte to the packet.</summary>
-    /// <param name="_value">The byte to add.</param>
+    #region Write Data 
+    // 빋은 다양한 데이터의 형식을 byte단위로 바꾸어 버퍼에 저장
+
     public void Write(byte _value)
     {
         buffer.Add(_value);
     }
-    /// <summary>Adds an array of bytes to the packet.</summary>
-    /// <param name="_value">The byte array to add.</param>
+
     public void Write(byte[] _value)
     {
         buffer.AddRange(_value);
     }
-    /// <summary>Adds a short to the packet.</summary>
-    /// <param name="_value">The short to add.</param>
+
     public void Write(short _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    /// <summary>Adds an int to the packet.</summary>
-    /// <param name="_value">The int to add.</param>
+
     public void Write(int _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    /// <summary>Adds a long to the packet.</summary>
-    /// <param name="_value">The long to add.</param>
+
     public void Write(long _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    /// <summary>Adds a float to the packet.</summary>
-    /// <param name="_value">The float to add.</param>
+
     public void Write(float _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    /// <summary>Adds a bool to the packet.</summary>
-    /// <param name="_value">The bool to add.</param>
+
     public void Write(bool _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    /// <summary>Adds a string to the packet.</summary>
-    /// <param name="_value">The string to add.</param>
+
     public void Write(string _value)
     {
         Write(_value.Length); // Add the length of the string to the packet
         buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
     }
-    /// <summary>Adds a Vector3 to the packet.</summary>
-    /// <param name="_value">The Vector3 to add.</param>
+
     public void Write(Vector3 _value)
     {
         Write(_value.x);
         Write(_value.y);
         Write(_value.z);
     }
-    /// <summary>Adds a Quaternion to the packet.</summary>
-    /// <param name="_value">The Quaternion to add.</param>
+
     public void Write(Quaternion _value)
     {
         Write(_value.x);
@@ -193,8 +182,8 @@ public class Packet : IDisposable
     #endregion
 
     #region Read Data
-    /// <summary>Reads a byte from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+    // 읽기버파에 저장된 데이터를 원하는 형식으로 읽는 함수
+
     public byte ReadByte(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -214,9 +203,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads an array of bytes from the packet.</summary>
-    /// <param name="_length">The length of the byte array.</param>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public byte[] ReadBytes(int _length, bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -236,8 +222,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a short from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public short ReadShort(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -257,8 +241,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads an int from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public int ReadInt(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -278,8 +260,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a long from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public long ReadLong(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -299,8 +279,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a float from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public float ReadFloat(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -320,8 +298,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a bool from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public bool ReadBool(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -341,8 +317,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a string from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public string ReadString(bool _moveReadPos = true)
     {
         try
@@ -362,8 +336,6 @@ public class Packet : IDisposable
         }
     }
 
-    /// <summary>Reads a Vector3 from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
     public Vector3 ReadVector3(bool _moveReadPos = true)
     {
         return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
