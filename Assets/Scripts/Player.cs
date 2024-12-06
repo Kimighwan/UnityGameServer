@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 플레이어 관련 데이터와 로직
+
 public class Player : MonoBehaviour
 {
     public int id;
     public string userName;
+
     public CharacterController controller;
-    public Transform shootOrigin;
+    public Transform shootOrigin; // 총알 나가는 위치
+
     public float gravity = -9.81f;
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
-    public float throwForce = 600f;
+    public float throwForce = 600f; // 던지는 힘
     public float hp;
     public float maxHP = 100f;
     public int itemAmount = 0;

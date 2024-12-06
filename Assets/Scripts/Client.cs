@@ -76,7 +76,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
                 int byteLength = stream.EndRead(_result); // 스트림에서 읽은 바이트 수를 저장한다
                 if (byteLength <= 0)
                 {
-                    Server.clients[id].Disconnect();
+                    Server.clients[id].Disconnect(); // 연결 종료
                     return;
                 }
 
@@ -90,7 +90,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
             catch (Exception m)
             {
                 Debug.Log($"Error : {m}");
-                Server.clients[id].Disconnect();
+                Server.clients[id].Disconnect(); // 연결 종료
             }
         }
 
@@ -137,13 +137,13 @@ public class Client // 클라이언트 정보를 저장하는 클래스
             return false;
         }
 
-        public void Disconnect()
+        public void Disconnect() // 연결 끊기
         {
-            socket.Close();
-            stream = null;
-            receiveData = null;
-            receiveBuffer = null;
-            socket = null;
+            socket.Close();         // 소켓 닫기
+            stream = null;          // 초기화
+            receiveData = null;     // 초기화
+            receiveBuffer = null;   // 초기화
+            socket = null;          // 초기화
         }
     }
 
@@ -192,7 +192,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
     public void SendIntToGame(string playerName)
     {
         player = NetworkManager.instance.InstantiatePlayer();
-        player.Initialize(clientId, playerName);
+        player.Initialize(clientId, playerName); // 플레이어 정보 초기화
 
         foreach (Client client in Server.clients.Values)
         {
@@ -219,9 +219,9 @@ public class Client // 클라이언트 정보를 저장하는 클래스
         }
     }
 
-    private void Disconnect()
+    private void Disconnect() // 연결 종료
     {
-        Debug.Log($"{tcp.socket.Client.RemoteEndPoint} has disconnect.");
+        Debug.Log($"{tcp.socket.Client.RemoteEndPoint} 연결 종료.");
 
         ThreadManager.ExecuteOnMainThread(() =>
         {

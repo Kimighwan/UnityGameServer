@@ -36,7 +36,7 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public Player InstantiatePlayer()
+    public Player InstantiatePlayer() // 플레이어 생성
     {
         return Instantiate(playerPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();
     }

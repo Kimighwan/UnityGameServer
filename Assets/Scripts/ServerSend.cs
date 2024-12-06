@@ -10,6 +10,10 @@ public class ServerSend
     // 아래의 Send 메서드 들은 전송할 패킷을을 준비하는 메소드
     // 클라이언트 버퍼에 전달받은 패킷 데이터를 저장
 
+    // 중요한 정보는 TCP를 이용하고
+    // 반대로 중요하지 않거나 빠르게 통신이 필요한 경우는 UDP를 사용
+    // 또 지속적으로 데이터를 전송하는 경우 데이터를 잃어도 계속 전송하기에 UDP를 사용
+
     private static void SendTCPData(int toClient, Packet packet)
     {
         packet.WriteLength();
