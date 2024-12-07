@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -8,54 +8,54 @@ using Unity.VisualScripting;
 
 public class Server
 {
-    public static int maxPlayer { get; private set; } // ÇÃ·¹ÀÌ¾î ÃÖ´ë ÀÔÀå ¼ö
-    public static int port { get; private set; } // Æ÷Æ® ¼³Á¤
+    public static int maxPlayer { get; private set; } // í”Œë ˆì´ì–´ ìµœëŒ€ ì…ì¥ ìˆ˜
+    public static int port { get; private set; } // í¬íŠ¸ ì„¤ì •
 
-    public static Dictionary<int, Client> clients = new Dictionary<int, Client>(); // Å¬¶óÀÌ¾ğÆ® ID¿¡ ÇØ´çÇÏ´Â Å¬¶óÀÌ¾ğÆ®À» ÀúÀå
-    public delegate void PacketHandler(int fromClient, Packet packet);             // Å¬¶óÀÌ¾ğÆ® ID¿¡ ÇØ´çÇÏ´Â ÆĞÅ¶À» ÀúÀå
-    public static Dictionary<int, PacketHandler> packetHandlers;                   // Å¬¶óÀÌ¾ğÆ® ID¿¡ ÇØ´çÇÏ´Â PacketHandler¸¦ ÀúÀå
+    public static Dictionary<int, Client> clients = new Dictionary<int, Client>(); // í´ë¼ì´ì–¸íŠ¸ IDì— í•´ë‹¹í•˜ëŠ” í´ë¼ì´ì–¸íŠ¸ì„ ì €ì¥
+    public delegate void PacketHandler(int fromClient, Packet packet);             // í´ë¼ì´ì–¸íŠ¸ IDì— í•´ë‹¹í•˜ëŠ” íŒ¨í‚·ì„ ì €ì¥
+    public static Dictionary<int, PacketHandler> packetHandlers;                   // í´ë¼ì´ì–¸íŠ¸ IDì— í•´ë‹¹í•˜ëŠ” PacketHandlerë¥¼ ì €ì¥
 
-    private static TcpListener tcpListener; // tcp ³×Æ®¿öÅ©¿¡¼­ Å¬¶óÀÌ¾ğÆ®ÀÇ ¿¬°áÀ» ¼ö½ÅÇÏ´Â Å¬·¡½º
-    private static UdpClient udpListener; // udp ³×Æ®¿öÅ©¿¡¼­ Å¬¶óÀÌ¾ğÆ®ÀÇ ¿¬°áÀ» ¼ö½ÅÇÏ´Â Å¬·¡½º
+    private static TcpListener tcpListener; // tcp ë„¤íŠ¸ì›Œí¬ì—ì„œ í´ë¼ì´ì–¸íŠ¸ì˜ ì—°ê²°ì„ ìˆ˜ì‹ í•˜ëŠ” í´ë˜ìŠ¤
+    private static UdpClient udpListener; // udp ë„¤íŠ¸ì›Œí¬ì—ì„œ í´ë¼ì´ì–¸íŠ¸ì˜ ì—°ê²°ì„ ìˆ˜ì‹ í•˜ëŠ” í´ë˜ìŠ¤
 
-    public static void Start(int _maxPlayer, int _port) // ¼­¹ö¿¡ ÇÊ¿äÇÑ ¸ğµç ¼³Á¤À» ¼öÇà
+    public static void Start(int _maxPlayer, int _port) // ì„œë²„ì— í•„ìš”í•œ ëª¨ë“  ì„¤ì •ì„ ìˆ˜í–‰
     {
         maxPlayer = _maxPlayer;
         port = _port;
 
-        Debug.Log("¼­¹ö ½ÃÀÛ ÁØºñ...");
+        Debug.Log("ì„œë²„ ì‹œì‘ ì¤€ë¹„...");
         InitServerData();
 
-        tcpListener = new TcpListener(IPAddress.Any, port); // ÁöÁ¤µÈ port·Î ¿À´Â ¸ğµç Å¬¶óÀÌ¾ğÆ®(¸ğµç ip)¸¦ Çã¿ë
-        tcpListener.Start(); // ¿¬°á ¿äÃ» ¼ö½Å ½ÃÀÛ = ¹ÙÀÎµå Ã³¸®
-        tcpListener.BeginAcceptTcpClient(TcpConnectCallBack, null); // µé¾î¿À´Â ¿¬°áÀ» ¹Ş¾ÆµéÀÌ´Â ºñµ¿±â ÀÛ¾÷À» ½ÃÀÛ
-                                                                    // ºñµ¿±â·Î ÇÏ±â ¶§¹®¿¡ ¿©·¯ ¿¬°áÀ» µ¿½Ã¿¡ °¡´ÉÇÏ´Ù
-                                                                    // Ã¹ ¹øÂ° ¸Å°³º¯¼ö´Â ÀÛ¾÷ÀÌ ¿Ï·áµÇ¸é È£ÃâµÈ´Ù.
+        tcpListener = new TcpListener(IPAddress.Any, port); // ì§€ì •ëœ portë¡œ ì˜¤ëŠ” ëª¨ë“  í´ë¼ì´ì–¸íŠ¸(ëª¨ë“  ip)ë¥¼ í—ˆìš©
+        tcpListener.Start(); // ì—°ê²° ìš”ì²­ ìˆ˜ì‹  ì‹œì‘ = ë°”ì¸ë“œ ì²˜ë¦¬
+        tcpListener.BeginAcceptTcpClient(TcpConnectCallBack, null); // ë“¤ì–´ì˜¤ëŠ” ì—°ê²°ì„ ë°›ì•„ë“¤ì´ëŠ” ë¹„ë™ê¸° ì‘ì—…ì„ ì‹œì‘
+                                                                    // ë¹„ë™ê¸°ë¡œ í•˜ê¸° ë•Œë¬¸ì— ì—¬ëŸ¬ ì—°ê²°ì„ ë™ì‹œì— ê°€ëŠ¥í•˜ë‹¤
+                                                                    // ì²« ë²ˆì§¸ ë§¤ê°œë³€ìˆ˜ëŠ” ì‘ì—…ì´ ì™„ë£Œë˜ë©´ í˜¸ì¶œëœë‹¤.
 
-        udpListener = new UdpClient(port); // ÁöÁ¤µÈ port·Î ¿¬°á
-        udpListener.BeginReceive(UDPReceiveCallback, null); // ¼ö½Å
+        udpListener = new UdpClient(port); // ì§€ì •ëœ portë¡œ ì—°ê²°
+        udpListener.BeginReceive(UDPReceiveCallback, null); // ìˆ˜ì‹ 
 
 
-        Debug.Log($"Æ÷Æ® ¹øÈ£ : {port}·Î ¼­¹ö ½ÃÀÛ!!!");
+        Debug.Log($"í¬íŠ¸ ë²ˆí˜¸ : {port}ë¡œ ì„œë²„ ì‹œì‘!!!");
     }
 
 
-    private static void TcpConnectCallBack(IAsyncResult _result) // ¸Å°³º¯¼öÀÇ IAsyncResult´Â ºñµ¿±â ÀÛ¾÷ÀÇ »óÅÂ
+    private static void TcpConnectCallBack(IAsyncResult _result) // ë§¤ê°œë³€ìˆ˜ì˜ IAsyncResultëŠ” ë¹„ë™ê¸° ì‘ì—…ì˜ ìƒíƒœ
     {
-        TcpClient client = tcpListener.EndAcceptTcpClient(_result); // ºñµ¿±âÀûÀ¸·Î ¿¬°áÀ» ¹Ş°í Åë½ÅÀ» À§ÇØ »õ·Î¿î TcpClient¸¦ »ı¼º
-        tcpListener.BeginAcceptTcpClient(TcpConnectCallBack, null); // ¶Ç ´Ù½Ã ¿¬°áÀ» ¹Ş¾ÆµéÀÌ´Â ÀÛ¾÷À» ÇÏ¿© °è¼ÓÇØ¼­ client¸¦ ¹Ş´Â´Ù
-        Debug.Log($"{client.Client.RemoteEndPoint}À¸·Î ºÎÅÍ ¿¬°á ½Ãµµ Áß...");
+        TcpClient client = tcpListener.EndAcceptTcpClient(_result); // ë¹„ë™ê¸°ì ìœ¼ë¡œ ì—°ê²°ì„ ë°›ê³  í†µì‹ ì„ ìœ„í•´ ìƒˆë¡œìš´ TcpClientë¥¼ ìƒì„±
+        tcpListener.BeginAcceptTcpClient(TcpConnectCallBack, null); // ë˜ ë‹¤ì‹œ ì—°ê²°ì„ ë°›ì•„ë“¤ì´ëŠ” ì‘ì—…ì„ í•˜ì—¬ ê³„ì†í•´ì„œ clientë¥¼ ë°›ëŠ”ë‹¤
+        Debug.Log($"{client.Client.RemoteEndPoint}ìœ¼ë¡œ ë¶€í„° ì—°ê²° ì‹œë„ ì¤‘...");
 
         for (int i = 1; i <= maxPlayer; i++)
         {
             if (clients[i].tcp.socket == null)
             {
-                clients[i].tcp.Connect(client); // À§¿¡¼­ »õ·Î ¿¬°áµÈ TCP Å¬¶óÀÌ¾ğÆ®¸¦ Àü´ŞÇÏ¿© Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏ¿¡ ÇÒ´ç
+                clients[i].tcp.Connect(client); // ìœ„ì—ì„œ ìƒˆë¡œ ì—°ê²°ëœ TCP í´ë¼ì´ì–¸íŠ¸ë¥¼ ì „ë‹¬í•˜ì—¬ í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì— í• ë‹¹
                 return;
             }
 
-            Debug.Log($"{client.Client.RemoteEndPoint} ¼­¹öÀÇ ²ËÃ¡½À´Ï´Ù..."); 
-            // À§¿¡ ·çÇÁ¹®¿¡¼­ ¿¬°áÀ» ÇÏÁö ¸øÇÏ¸é ³²´Â Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏÀÌ ¾ø¾î Á¢¼Ó ºÒ°¡´É
+            Debug.Log($"{client.Client.RemoteEndPoint} ì„œë²„ì˜ ê½‰ì°¼ìŠµë‹ˆë‹¤..."); 
+            // ìœ„ì— ë£¨í”„ë¬¸ì—ì„œ ì—°ê²°ì„ í•˜ì§€ ëª»í•˜ë©´ ë‚¨ëŠ” í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì´ ì—†ì–´ ì ‘ì† ë¶ˆê°€ëŠ¥
         }
     }
 
@@ -63,10 +63,10 @@ public class Server
     {
         try
         {
-            IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0); // Æ¯Á¤ ip ÁÖ¼Ò¿Í Æ÷Æ®°¡ ¾ø´Â IPEndPoint »ı¼º
-            byte[] data = udpListener.EndReceive(_result, ref clientEndPoint); // ¼ö½ÅÇÑ µ¥ÀÌÅÍ¸¦ data¿¡ ÀúÀåÇÏ¸ç ´Ù½Ã ¹ÙÀÌÆ® ¹è¿­·Î ÀúÀåÇÏ°í
-                                                                               // clientEndPointÀ» µ¥ÀÌÅÍ¸¦ ¼ö½ÅÇÑ IPEndPoint ¼³Á¤ÇÑ´Ù
-            udpListener.BeginReceive(UDPReceiveCallback, null); // °è¼Ó ¼ö½Å
+            IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0); // íŠ¹ì • ip ì£¼ì†Œì™€ í¬íŠ¸ê°€ ì—†ëŠ” IPEndPoint ìƒì„±
+            byte[] data = udpListener.EndReceive(_result, ref clientEndPoint); // ìˆ˜ì‹ í•œ ë°ì´í„°ë¥¼ dataì— ì €ì¥í•˜ë©° ë‹¤ì‹œ ë°”ì´íŠ¸ ë°°ì—´ë¡œ ì €ì¥í•˜ê³ 
+                                                                               // clientEndPointì„ ë°ì´í„°ë¥¼ ìˆ˜ì‹ í•œ IPEndPoint ì„¤ì •í•œë‹¤
+            udpListener.BeginReceive(UDPReceiveCallback, null); // ê³„ì† ìˆ˜ì‹ 
 
             if (data.Length < 4)
             {
@@ -75,20 +75,20 @@ public class Server
 
             using (Packet packet = new Packet(data))
             {
-                int clientId = packet.ReadInt(); // Å¬¶óÀÌ¾ğÆ® ID ÀĞ±â
+                int clientId = packet.ReadInt(); // í´ë¼ì´ì–¸íŠ¸ ID ì½ê¸°
 
                 if (clientId == 0)
                 {
                     return;
                 }
 
-                if (clients[clientId].udp.endPoint == null) // Å©¶óÀÌ¾ğÆ® Æ÷Æ®¸¦ ¿©´Â ºó ÆĞÅ¶À» ÀÇ¹Ì
+                if (clients[clientId].udp.endPoint == null) // í¬ë¼ì´ì–¸íŠ¸ í¬íŠ¸ë¥¼ ì—¬ëŠ” ë¹ˆ íŒ¨í‚·ì„ ì˜ë¯¸
                 {
                     clients[clientId].udp.Connect(clientEndPoint);
                     return;
                 }
 
-                // Å¬¶óÀÌ¾ğÆ®¿¡ ÀúÀåµÈ IPEndPoint¿Í ÆĞÅ¶ÀÇ IPEndPoint¿Í¸¦ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎ
+                // í´ë¼ì´ì–¸íŠ¸ì— ì €ì¥ëœ IPEndPointì™€ íŒ¨í‚·ì˜ IPEndPointì™€ë¥¼ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸
                 if (clients[clientId].udp.endPoint.ToString() == clientEndPoint.ToString())  
                 {
                     clients[clientId].udp.HandleData(packet);
@@ -97,7 +97,7 @@ public class Server
         }
         catch (Exception e)
         {
-            Debug.Log($"upd µ¥ÀÌÅÍ ¼ö½Å ¿À·ù / {e}");
+            Debug.Log($"upd ë°ì´í„° ìˆ˜ì‹  ì˜¤ë¥˜ / {e}");
         } 
     }
 
@@ -112,7 +112,7 @@ public class Server
         }
         catch (Exception e)
         {
-            Debug.Log($"udp·Î {clientEndPoint}¿¡°Ô µ¥ÀÌÅÍ º¸³»±â ¿À·ù / {e}");
+            Debug.Log($"udpë¡œ {clientEndPoint}ì—ê²Œ ë°ì´í„° ë³´ë‚´ê¸° ì˜¤ë¥˜ / {e}");
         }
     }
 

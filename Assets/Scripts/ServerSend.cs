@@ -1,22 +1,22 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-// ÆĞÅ¶À» Àü¼ÛÇÏ´Â ¸Ş¼Òµå
-// ÆĞÅ¶À» »ı¼ºÇÏ´Â ¸Ş¼Òµå
+// íŒ¨í‚·ì„ ì „ì†¡í•˜ëŠ” ë©”ì†Œë“œ
+// íŒ¨í‚·ì„ ìƒì„±í•˜ëŠ” ë©”ì†Œë“œ
 
-// À§ µÎ°³ÀÇ ÀÛ¾÷À» ÇÏ´Â Å¬·¡½º
+// ìœ„ ë‘ê°œì˜ ì‘ì—…ì„ í•˜ëŠ” í´ë˜ìŠ¤
 public class ServerSend
 {
-    // ¾Æ·¡ÀÇ Send ¸Ş¼­µåµéÀº ÆĞÅ¶À» Àü¼Û
+    // ì•„ë˜ì˜ Send ë©”ì„œë“œë“¤ì€ íŒ¨í‚·ì„ ì „ì†¡
 
     // Server.clients[toClient].tcp.SendData(packet);
-    // ÇØ´ç ÄÚµå¸¦ °øºÎÇØ¼­ ¼³¸íÀÌ ÇÊ¿äÇÏ´Ù
+    // í•´ë‹¹ ì½”ë“œë¥¼ ê³µë¶€í•´ì„œ ì„¤ëª…ì´ í•„ìš”í•˜ë‹¤
 
-    // Áß¿äÇÑ Á¤º¸´Â TCP¸¦ ÀÌ¿ëÇÏ°í
-    // ¹İ´ë·Î Áß¿äÇÏÁö ¾Ê°Å³ª ºü¸£°Ô Åë½ÅÀÌ ÇÊ¿äÇÑ °æ¿ì´Â UDP¸¦ »ç¿ë
-    // ¶Ç Áö¼ÓÀûÀ¸·Î µ¥ÀÌÅÍ¸¦ Àü¼ÛÇÏ´Â °æ¿ì µ¥ÀÌÅÍ¸¦ ÀÒ¾îµµ °è¼Ó Àü¼ÛÇÏ±â¿¡ UDP¸¦ »ç¿ë
+    // ì¤‘ìš”í•œ ì •ë³´ëŠ” TCPë¥¼ ì´ìš©í•˜ê³ 
+    // ë°˜ëŒ€ë¡œ ì¤‘ìš”í•˜ì§€ ì•Šê±°ë‚˜ ë¹ ë¥´ê²Œ í†µì‹ ì´ í•„ìš”í•œ ê²½ìš°ëŠ” UDPë¥¼ ì‚¬ìš©
+    // ë˜ ì§€ì†ì ìœ¼ë¡œ ë°ì´í„°ë¥¼ ì „ì†¡í•˜ëŠ” ê²½ìš° ë°ì´í„°ë¥¼ ìƒì–´ë„ ê³„ì† ì „ì†¡í•˜ê¸°ì— UDPë¥¼ ì‚¬ìš©
 
     private static void SendTCPData(int toClient, Packet packet)
     {
@@ -73,10 +73,10 @@ public class ServerSend
     }
 
     #region Packet
-    // ÆĞÅ¶¿¡ ÇÊ¿äÇÑ µ¥ÀÌÅÍ¸¦ ÀÔ·Â
-    // À§ÀÇ ÀûÀıÇÑ Àü¼Û ¸Ş¼­µå¸¦ ÅëÇØ¼­ Àü¼Û
+    // íŒ¨í‚·ì— í•„ìš”í•œ ë°ì´í„°ë¥¼ ì…ë ¥
+    // ìœ„ì˜ ì ì ˆí•œ ì „ì†¡ ë©”ì„œë“œë¥¼ í†µí•´ì„œ ì „ì†¡
 
-    public static void Welcome(int toClient, string m) // ¸Å°³º¯¼ö => ¾î¶² Å¬¶óÀÌ¾ğÆ®, ¸Ş¼¼Áö 
+    public static void Welcome(int toClient, string m) // ë§¤ê°œë³€ìˆ˜ => ì–´ë–¤ í´ë¼ì´ì–¸íŠ¸, ë©”ì„¸ì§€ 
     {
         using (Packet packet = new Packet((int)ServerPackets.welcome))
         {
@@ -165,7 +165,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemSpawned(int spawnerId)   // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ÆĞÅ¶ »ı¼º
+    public static void ItemSpawned(int spawnerId)   // ì•„ì´í…œ ë°ì´í„° íŒ¨í‚· ìƒì„±
     {
         using (Packet packet = new Packet((int)ServerPackets.itemSpawned))
         {
@@ -175,7 +175,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemPickedUp(int spawnerId, int byPlayer)    // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛÀ» È¹µæÇß´Ù´Â µ¥ÀÌÅÍ ÆĞÅ¶ »ı¼º
+    public static void ItemPickedUp(int spawnerId, int byPlayer)    // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œì„ íšë“í–ˆë‹¤ëŠ” ë°ì´í„° íŒ¨í‚· ìƒì„±
     {
         using (Packet packet = new Packet((int)ServerPackets.itemPickedUp))
         {

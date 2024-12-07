@@ -1,15 +1,15 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
 
-public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+public class Client // í´ë¼ì´ì–¸íŠ¸ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 {
-    public int clientId; // Å¬¶óÀÌ¾ğÆ® ID
-    public TCP tcp; // tcp ¼ÒÄÏ Å¬·¡½º ¾Æ·¡¿¡¼­ Á÷Á¢ »ı¼º
-    public UDP udp; // udp ¼ÒÄÏ Å¬·¡½º ¾Æ·¡¿¡¼­ Á÷Á¢ »ı¼º
+    public int clientId; // í´ë¼ì´ì–¸íŠ¸ ID
+    public TCP tcp; // tcp ì†Œì¼“ í´ë˜ìŠ¤ ì•„ë˜ì—ì„œ ì§ì ‘ ìƒì„±
+    public UDP udp; // udp ì†Œì¼“ í´ë˜ìŠ¤ ì•„ë˜ì—ì„œ ì§ì ‘ ìƒì„±
     public static int bufferSize = 4096;
     public Player player;
 
@@ -22,32 +22,32 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
 
     public class TCP
     {
-        public TcpClient socket; // ¿¬°áÀ» ÅëÇØ ¾ò´Â TCP Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏ
+        public TcpClient socket; // ì—°ê²°ì„ í†µí•´ ì–»ëŠ” TCP í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“
 
         private readonly int id;
         private NetworkStream stream;
         private Packet receiveData;
-        private byte[] receiveBuffer; // ¼ö½Å¹ŞÀ» µ¥ÀÌÅÍ¸¦ ¹ÙÀÌÆ® ´ÜÀ§·Î ¹Ş´Â ¹öÆÛ
+        private byte[] receiveBuffer; // ìˆ˜ì‹ ë°›ì„ ë°ì´í„°ë¥¼ ë°”ì´íŠ¸ ë‹¨ìœ„ë¡œ ë°›ëŠ” ë²„í¼
 
         public TCP(int _id)
         {
             id = _id;
         }
 
-        public void Connect(TcpClient _socket) // Server¼ÒÄÏÀ» ÅëÇØ ¿¬°áµÈ Å¬¶óÀÌ¾ğÆ®¸¦ ¸Å°³º¯¼ö·Î ¹Ş¾Æ ¼ÒÄÏ¿¡ ÇÒ´ç
+        public void Connect(TcpClient _socket) // Serverì†Œì¼“ì„ í†µí•´ ì—°ê²°ëœ í´ë¼ì´ì–¸íŠ¸ë¥¼ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ ì†Œì¼“ì— í• ë‹¹
         {
             socket = _socket;
-            socket.ReceiveBufferSize = bufferSize; // ¼ö½Å ¹öÆÛ Å©±â ÃÊ±âÈ­
-            socket.SendBufferSize = bufferSize;    // ¼Û½Å¹öÆÛ Å©±â ÃÊ±âÈ­
+            socket.ReceiveBufferSize = bufferSize; // ìˆ˜ì‹  ë²„í¼ í¬ê¸° ì´ˆê¸°í™”
+            socket.SendBufferSize = bufferSize;    // ì†¡ì‹ ë²„í¼ í¬ê¸° ì´ˆê¸°í™”
 
-            stream = socket.GetStream(); // Å¬¶óÀÌ¾ğÆ®·Î ºÎÅÍ ¸Ş¼¼Áö¸¦ ¹Ş´Â´Ù.
+            stream = socket.GetStream(); // í´ë¼ì´ì–¸íŠ¸ë¡œ ë¶€í„° ë©”ì„¸ì§€ë¥¼ ë°›ëŠ”ë‹¤.
 
             receiveData = new Packet();
 
             receiveBuffer = new byte[bufferSize];
 
-            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null); // NetworkStream ¸Ş¼Òµå¸¦ ÅëÇØ ÀĞ´Â´Ù
-                                                                                   // ÀĞÀº °á°ú¸¦ ºñµ¿±â Äİ¹é ÇÔ¼ö·Î ³Ñ±ä´Ù.
+            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null); // NetworkStream ë©”ì†Œë“œë¥¼ í†µí•´ ì½ëŠ”ë‹¤
+                                                                                   // ì½ì€ ê²°ê³¼ë¥¼ ë¹„ë™ê¸° ì½œë°± í•¨ìˆ˜ë¡œ ë„˜ê¸´ë‹¤.
 
             ServerSend.Welcome(id, "Welcom Server!!!");
         }
@@ -59,7 +59,7 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
             {
                 if (socket != null)
                 {
-                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // ½ºÆ®¸²À» ÀĞÀ½
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // ìŠ¤íŠ¸ë¦¼ì„ ì½ìŒ
                 }
             }
             catch (Exception m)
@@ -73,15 +73,15 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
         {
             try
             {
-                int byteLength = stream.EndRead(_result); // ½ºÆ®¸²¿¡¼­ ÀĞÀº ¹ÙÀÌÆ® ¼ö¸¦ ÀúÀåÇÑ´Ù
+                int byteLength = stream.EndRead(_result); // ìŠ¤íŠ¸ë¦¼ì—ì„œ ì½ì€ ë°”ì´íŠ¸ ìˆ˜ë¥¼ ì €ì¥í•œë‹¤
                 if (byteLength <= 0)
                 {
-                    Server.clients[id].Disconnect(); // ¿¬°á Á¾·á
+                    Server.clients[id].Disconnect(); // ì—°ê²° ì¢…ë£Œ
                     return;
                 }
 
                 byte[] data = new byte[byteLength];
-                Array.Copy(receiveBuffer, data, byteLength); // ½ºÆ®¸² ³»¿ëÀ» º¹»çÇÑ´Ù.
+                Array.Copy(receiveBuffer, data, byteLength); // ìŠ¤íŠ¸ë¦¼ ë‚´ìš©ì„ ë³µì‚¬í•œë‹¤.
 
                 receiveData.Reset(HandleData(data));
 
@@ -90,7 +90,7 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
             catch (Exception m)
             {
                 Debug.Log($"Error : {m}");
-                Server.clients[id].Disconnect(); // ¿¬°á Á¾·á
+                Server.clients[id].Disconnect(); // ì—°ê²° ì¢…ë£Œ
             }
         }
 
@@ -137,13 +137,13 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
             return false;
         }
 
-        public void Disconnect() // ¿¬°á ²÷±â
+        public void Disconnect() // ì—°ê²° ëŠê¸°
         {
-            socket.Close();         // ¼ÒÄÏ ´İ±â
-            stream = null;          // ÃÊ±âÈ­
-            receiveData = null;     // ÃÊ±âÈ­
-            receiveBuffer = null;   // ÃÊ±âÈ­
-            socket = null;          // ÃÊ±âÈ­
+            socket.Close();         // ì†Œì¼“ ë‹«ê¸°
+            stream = null;          // ì´ˆê¸°í™”
+            receiveData = null;     // ì´ˆê¸°í™”
+            receiveBuffer = null;   // ì´ˆê¸°í™”
+            socket = null;          // ì´ˆê¸°í™”
         }
     }
 
@@ -170,7 +170,7 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
 
         public void HandleData(Packet packet)
         {
-            int packetLength = packet.ReadInt(); // ÆĞÅ¶ ±æÀÌ
+            int packetLength = packet.ReadInt(); // íŒ¨í‚· ê¸¸ì´
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
             ThreadManager.ExecuteOnMainThread(() =>
@@ -178,7 +178,7 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
                 using (Packet packet = new Packet(packetBytes))
                 {
                     int packetId = packet.ReadInt();
-                    Server.packetHandlers[packetId](id, packet); // ID¿¡ ¸Â´Â ÀûÀıÇÑ ÆĞÅ¶ Ã³¸® ¸Ş¼­µå È£Ãâ
+                    Server.packetHandlers[packetId](id, packet); // IDì— ë§ëŠ” ì ì ˆí•œ íŒ¨í‚· ì²˜ë¦¬ ë©”ì„œë“œ í˜¸ì¶œ
                 }
             });
         }
@@ -192,7 +192,7 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
     public void SendIntToGame(string playerName)
     {
         player = NetworkManager.instance.InstantiatePlayer();
-        player.Initialize(clientId, playerName); // ÇÃ·¹ÀÌ¾î Á¤º¸ ÃÊ±âÈ­
+        player.Initialize(clientId, playerName); // í”Œë ˆì´ì–´ ì •ë³´ ì´ˆê¸°í™”
 
         foreach (Client client in Server.clients.Values)
         {
@@ -216,13 +216,13 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
         foreach(ItemSpawner itemSpawner in ItemSpawner.spawners.Values)
         {
             ServerSend.CreateItemSpawner(clientId, itemSpawner.spawnerId, itemSpawner.transform.position, itemSpawner.hasItem);
-            // Å¬¶óÀÌ¾ğÆ®¿¡ Á¸ÀçÇÏ´Â °¢ ¾ÆÀÌÅÛ ½ºÆ÷³Ê¿¡ ´ëÇÑ ÆĞÅ¶À» Àü¼ÛÇÑ´Ù.
+            // í´ë¼ì´ì–¸íŠ¸ì— ì¡´ì¬í•˜ëŠ” ê° ì•„ì´í…œ ìŠ¤í¬ë„ˆì— ëŒ€í•œ íŒ¨í‚·ì„ ì „ì†¡í•œë‹¤.
         }
     }
 
-    private void Disconnect() // ¿¬°á Á¾·á
+    private void Disconnect() // ì—°ê²° ì¢…ë£Œ
     {
-        Debug.Log($"{tcp.socket.Client.RemoteEndPoint} ¿¬°á Á¾·á.");
+        Debug.Log($"{tcp.socket.Client.RemoteEndPoint} ì—°ê²° ì¢…ë£Œ.");
 
         ThreadManager.ExecuteOnMainThread(() =>
         {
@@ -238,4 +238,6 @@ public class Client // Å¬¶óÀÌ¾ğÆ® Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
 
         ServerSend.PlayerDisconnected(clientId);
     }
+
+    // í•œê¸€ ê¹¨ì§ í…ŒìŠ¤íŠ¸
 }

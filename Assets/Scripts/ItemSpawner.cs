@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +8,9 @@ public class ItemSpawner : MonoBehaviour
     private static int nextSpawnerId = 1;
 
     public int spawnerId;
-    public bool hasItem = false;    // ¾ÆÀÌÅÛ ½ºÆ÷³Ê°¡ ÇöÀç ¾ÆÀÌÅÛÀ» ¼ÒÈ¯ÇÏ°í ÀÖ´ÂÁö Ã¼Å©
-                                    // false : ÇöÀç ¼ÒÈ¯ ¹Ì»óÅÂ X
-                                    // true : ÇöÀç ¼ÒÈ¯µÊ
+    public bool hasItem = false;    // ì•„ì´í…œ ìŠ¤í¬ë„ˆê°€ í˜„ì¬ ì•„ì´í…œì„ ì†Œí™˜í•˜ê³  ìˆëŠ”ì§€ ì²´í¬
+                                    // false : í˜„ì¬ ì†Œí™˜ ë¯¸ìƒíƒœ X
+                                    // true : í˜„ì¬ ì†Œí™˜ë¨
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(hasItem && other.CompareTag("Player"))   // ÇöÀç ¾ÆÀÌÅÛÀÌ ¼ÒÈ¯ && ÇÃ·¹ÀÌ¾î°¡ Á¢ÃËÇÏ¸é ÀÛµ¿
+        if(hasItem && other.CompareTag("Player"))   // í˜„ì¬ ì•„ì´í…œì´ ì†Œí™˜ && í”Œë ˆì´ì–´ê°€ ì ‘ì´‰í•˜ë©´ ì‘ë™
         {
             Player player = other.GetComponent<Player>();
             if (player.AttempPickUpItem())
@@ -34,18 +34,18 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnItem() // ¾ÆÀÌÅÛ »ı¼º
+    private IEnumerator SpawnItem() // ì•„ì´í…œ ìƒì„±
     {
         yield return new WaitForSeconds(10f);
 
         hasItem = true;
-        ServerSend.ItemSpawned(spawnerId);  // ¾ÆÀÌÅÛÀ» »ı¼ºÇßÀ¸´Ï Å¬¶óÀÌ¾ğÆ®¿¡°Ô ÇØ´ç Á¤º¸¸¦ Àü¼Û
+        ServerSend.ItemSpawned(spawnerId);  // ì•„ì´í…œì„ ìƒì„±í–ˆìœ¼ë‹ˆ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ í•´ë‹¹ ì •ë³´ë¥¼ ì „ì†¡
     }
 
-    private void ItemPickUp(int byPlayer) // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛÀ» È¹µæÇÔ
+    private void ItemPickUp(int byPlayer) // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œì„ íšë“í•¨
     {
         hasItem = false;
-        ServerSend.ItemPickedUp(spawnerId, byPlayer); // Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ´©±º°¡¿¡ ÀÇÇØ È¹µæµÇ¾ú´Ù´Â »ç½Ç Àü¼Û
+        ServerSend.ItemPickedUp(spawnerId, byPlayer); // í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ì•„ì´í…œì´ ëˆ„êµ°ê°€ì— ì˜í•´ íšë“ë˜ì—ˆë‹¤ëŠ” ì‚¬ì‹¤ ì „ì†¡
 
         StartCoroutine(SpawnItem());
     }

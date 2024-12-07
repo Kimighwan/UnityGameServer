@@ -1,33 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviour
 {
-    public static NetworkManager instance; // ÇØ´ç ½ºÅ©¸³Æ® °´Ã¼¸¦ ÂüÁ¶ÇÏ´Â Àü¿ª º¯¼ö
+    public static NetworkManager instance; // í•´ë‹¹ ìŠ¤í¬ë¦½íŠ¸ ê°ì²´ë¥¼ ì°¸ì¡°í•˜ëŠ” ì „ì—­ ë³€ìˆ˜
 
-    public GameObject playerPrefab; // ÇÃ·¹ÀÌ¾î °´Ã¼
-    public GameObject projectilePrefab; // ½´·çÅº °´Ã¼
+    public GameObject playerPrefab; // í”Œë ˆì´ì–´ ê°ì²´
+    public GameObject projectilePrefab; // ìŠˆë£¨íƒ„ ê°ì²´
 
-    private void Awake() // À¯´ÏÆ¼ ¿£ÁøÀÇ »ı¸í ÁÖ±â ÇÔ¼ö -> °ÔÀÓ ½ÇÇà½Ã ÃÊ±â¿¡ ÇÑ ¹ø ½ÇÇàµÇ´Â ÇÔ¼ö
+    private void Awake() // ìœ ë‹ˆí‹° ì—”ì§„ì˜ ìƒëª… ì£¼ê¸° í•¨ìˆ˜ -> ê²Œì„ ì‹¤í–‰ì‹œ ì´ˆê¸°ì— í•œ ë²ˆ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     {
-        if (instance == null) // ¾ÆÁ÷ ¸¸µé¾îÁöÁö ¾Ê¾Ò´Ù¸é ÇöÀç °´Ã¼ ÇÒ´ç
+        if (instance == null) // ì•„ì§ ë§Œë“¤ì–´ì§€ì§€ ì•Šì•˜ë‹¤ë©´ í˜„ì¬ ê°ì²´ í• ë‹¹
         {
             instance = this;
         }
-        else if (instance != this) // ÀÌ¹Ì Á¸ÀçÇÑ´Ù¸é ÇöÀç °´Ã¼ »èÁ¦
+        else if (instance != this) // ì´ë¯¸ ì¡´ì¬í•œë‹¤ë©´ í˜„ì¬ ê°ì²´ ì‚­ì œ
         {
-            Destroy(this); // »èÁ¦
+            Destroy(this); // ì‚­ì œ
         }
     }
 
-    private void Start() // ¼­¹ö ½ÃÀÛ 
+    private void Start() // ì„œë²„ ì‹œì‘ 
     {
-        QualitySettings.vSyncCount = 0;   // ¼öÁ÷ µ¿±âÈ­ ºñÈ°¼ºÈ­
-        Application.targetFrameRate = 60; // °ÔÀÓ ÇÁ·¹ÀÓ 60À¸·Î °íÁ¤
+        QualitySettings.vSyncCount = 0;   // ìˆ˜ì§ ë™ê¸°í™” ë¹„í™œì„±í™”
+        Application.targetFrameRate = 60; // ê²Œì„ í”„ë ˆì„ 60ìœ¼ë¡œ ê³ ì •
 
-        Server.Start(2, 33374); // »ç¿ëµÇÁö ¾Ê´Â Æ÷Æ® ¹øÈ£·Î ¼­¹ö ¿­±â, ÇÃ·¹ÀÌ¾î ¼ö´Â 2¸í
-                                // https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers Âü°í
+        Server.Start(2, 33374); // ì‚¬ìš©ë˜ì§€ ì•ŠëŠ” í¬íŠ¸ ë²ˆí˜¸ë¡œ ì„œë²„ ì—´ê¸°, í”Œë ˆì´ì–´ ìˆ˜ëŠ” 2ëª…
+                                // https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers ì°¸ê³ 
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public Player InstantiatePlayer() // ÇÃ·¹ÀÌ¾î »ı¼º
+    public Player InstantiatePlayer() // í”Œë ˆì´ì–´ ìƒì„±
     {
         return Instantiate(playerPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();
     }
@@ -51,7 +51,7 @@ public class NetworkManager : MonoBehaviour
         return Instantiate(projectilePrefab, shootOrigin.position + shootOrigin.forward * 0.7f, Quaternion.identity).GetComponent<Projectile>();
     }
 
-    public bool CheckPlayer()     // Á¢¼ÓÇÑ ÇÃ·¹ÀÌ¾î Ã¼Å©
+    public bool CheckPlayer()     // ì ‘ì†í•œ í”Œë ˆì´ì–´ ì²´í¬
     {
         bool checkPlayer = false;
 
@@ -78,17 +78,17 @@ public class NetworkManager : MonoBehaviour
     private IEnumerator StartTime()
     {
         yield return new WaitForSeconds(3f); 
-        // 3ÃÊ Ä«¿îÆ® ´Ù¿î
-        // Å¬¶óÀÌ¾ğÆ®¿¡¼­µµ 3.. 2.. 1.. Ä«¿îÆ® UI Ç¥½Ã
+        // 3ì´ˆ ì¹´ìš´íŠ¸ ë‹¤ìš´
+        // í´ë¼ì´ì–¸íŠ¸ì—ì„œë„ 3.. 2.. 1.. ì¹´ìš´íŠ¸ UI í‘œì‹œ
 
-        // 60ÃÊ Å¸ÀÌ¸Ó ½ÃÀÛ
-        // Å¬¶óÀÌ¾ğÆ® Áß°£ »ó´Ü¿¡ Å¸ÀÌ¸Ó Ç¥½Ã
+        // 60ì´ˆ íƒ€ì´ë¨¸ ì‹œì‘
+        // í´ë¼ì´ì–¸íŠ¸ ì¤‘ê°„ ìƒë‹¨ì— íƒ€ì´ë¨¸ í‘œì‹œ
 
-        // 60ÃÊ Å¸ÀÌ¸Ó Á¾·á½Ã ¸î½ÂÆĞ Áı°è
+        // 60ì´ˆ íƒ€ì´ë¨¸ ì¢…ë£Œì‹œ ëª‡ìŠ¹íŒ¨ ì§‘ê³„
 
-        // È­¸é¿¡ ½ÂÆĞ UI Ç¥½Ã
-        // Å¬¶óÀÌ¾ğÆ®¿¡¼­µµ ½ÂÆĞ UI Ç¥½Ã
+        // í™”ë©´ì— ìŠ¹íŒ¨ UI í‘œì‹œ
+        // í´ë¼ì´ì–¸íŠ¸ì—ì„œë„ ìŠ¹íŒ¨ UI í‘œì‹œ
 
-        // 3ÃÊÈÄ ¼­¹ö Á¾·á
+        // 3ì´ˆí›„ ì„œë²„ ì¢…ë£Œ
     }
 }

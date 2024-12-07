@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// intÇü µ¥ÀÌÅÍ¸¦ ±×³É º¸³¾ ¼ö ¾ø´Ù.
-// µ¥ÀÌÅÍ À¯ÇüÀ» ÆĞÅ¶ Å¬·¡½º·Î ÅëÇØ ¹ÙÀÌÆ®·Î º¯È¯ÇÏ¿© ¼Û¼ö½Å ÇÑ´Ù
+// intí˜• ë°ì´í„°ë¥¼ ê·¸ëƒ¥ ë³´ë‚¼ ìˆ˜ ì—†ë‹¤.
+// ë°ì´í„° ìœ í˜•ì„ íŒ¨í‚· í´ë˜ìŠ¤ë¡œ í†µí•´ ë°”ì´íŠ¸ë¡œ ë³€í™˜í•˜ì—¬ ì†¡ìˆ˜ì‹  í•œë‹¤
 
 
 public enum ServerPackets
@@ -38,23 +38,23 @@ public class Packet : IDisposable
 {
     private List<byte> buffer;
     private byte[] readableBuffer;
-    private int readPos; // ¾Æ·¡¿¡¼­ µ¥ÀÌÅÍ¸¦ ¾²°Å³ª ÀĞÀ» ¶§ µ¥ÀÌÅÍ Å©±â¿¡ ¸Â°Ô Å©±â¸¦ ´õÇÏ°Å³ª »©ÁØ´Ù.
+    private int readPos; // ì•„ë˜ì—ì„œ ë°ì´í„°ë¥¼ ì“°ê±°ë‚˜ ì½ì„ ë•Œ ë°ì´í„° í¬ê¸°ì— ë§ê²Œ í¬ê¸°ë¥¼ ë”í•˜ê±°ë‚˜ ë¹¼ì¤€ë‹¤.
 
-    public Packet() // µğÆúÆ® »ı¼ºÀÚ
+    public Packet() // ë””í´íŠ¸ ìƒì„±ì
     {
-        buffer = new List<byte>(); // ¹öÆÛ ÃÊ±âÈ­
-        readPos = 0; // ÀĞÀ» À§Ä¡¸¦ 0À¸·Î ¼³Á¤
+        buffer = new List<byte>(); // ë²„í¼ ì´ˆê¸°í™”
+        readPos = 0; // ì½ì„ ìœ„ì¹˜ë¥¼ 0ìœ¼ë¡œ ì„¤ì •
     }
 
-    public Packet(int _id) // ID¸¦ ¹Ş´Â »ı¼ºÀÚ
+    public Packet(int _id) // IDë¥¼ ë°›ëŠ” ìƒì„±ì
     {
         buffer = new List<byte>();
         readPos = 0;
 
-        Write(_id); // ¹öÆÛ¿¡ id¸¦ ÀúÀå
+        Write(_id); // ë²„í¼ì— idë¥¼ ì €ì¥
     }
 
-    public Packet(byte[] _data) // byte ´ÜÀ§ µ¥ÀÌÅÍ¸¦ ¹Ş´Â »ı¼ºÀÚ
+    public Packet(byte[] _data) // byte ë‹¨ìœ„ ë°ì´í„°ë¥¼ ë°›ëŠ” ìƒì„±ì
     {
         buffer = new List<byte>();
         readPos = 0;
@@ -121,7 +121,7 @@ public class Packet : IDisposable
     #endregion
 
     #region Write Data 
-    // •±Àº ´Ù¾çÇÑ µ¥ÀÌÅÍÀÇ Çü½ÄÀ» byte´ÜÀ§·Î ¹Ù²Ù¾î ¹öÆÛ¿¡ ÀúÀå
+    // ë¹‹ì€ ë‹¤ì–‘í•œ ë°ì´í„°ì˜ í˜•ì‹ì„ byteë‹¨ìœ„ë¡œ ë°”ê¾¸ì–´ ë²„í¼ì— ì €ì¥
 
     public void Write(byte _value)
     {
@@ -182,7 +182,7 @@ public class Packet : IDisposable
     #endregion
 
     #region Read Data
-    // ÀĞ±â¹öÆÄ¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ¸¦ ¿øÇÏ´Â Çü½ÄÀ¸·Î ÀĞ´Â ÇÔ¼ö
+    // ì½ê¸°ë²„íŒŒì— ì €ì¥ëœ ë°ì´í„°ë¥¼ ì›í•˜ëŠ” í˜•ì‹ìœ¼ë¡œ ì½ëŠ” í•¨ìˆ˜
 
     public byte ReadByte(bool _moveReadPos = true)
     {

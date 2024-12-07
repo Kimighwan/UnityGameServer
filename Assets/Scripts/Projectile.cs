@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,7 +42,7 @@ public class Projectile : MonoBehaviour
         throwByPlayer = _throwByPlayer;
     }
 
-    private IEnumerator ExplodeAfterTime() // ¾îµğ¿¡ Ãæµ¹ÇÏÁö ¾Ê¾Æµµ 10ÃÊ µÚ¿¡ ÅÍÁöµµ·Ï ¼³Á¤
+    private IEnumerator ExplodeAfterTime() // ì–´ë””ì— ì¶©ëŒí•˜ì§€ ì•Šì•„ë„ 10ì´ˆ ë’¤ì— í„°ì§€ë„ë¡ ì„¤ì •
     {
         yield return new WaitForSeconds(10f);
 

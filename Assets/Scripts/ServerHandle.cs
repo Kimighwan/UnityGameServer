@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +10,10 @@ public class ServerHandle
         int clientChk = packet.ReadInt();
         string userName = packet.ReadString();
 
-        Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} ¼º°øÀûÀ¸·Î ¿¬°á¿Ï·á! / Player {fromClient}.");
+        Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} ì„±ê³µì ìœ¼ë¡œ ì—°ê²°ì™„ë£Œ! / Player {fromClient}.");
         if (fromClient != clientChk)
         {
-            Debug.Log($"Player \"{userName}\" (ID: {fromClient})´Â Àß¸øµÈ ID¸¦ °¡Áø´Ù ({clientChk})");
+            Debug.Log($"Player \"{userName}\" (ID: {fromClient})ëŠ” ì˜ëª»ëœ IDë¥¼ ê°€ì§„ë‹¤ ({clientChk})");
         }
         Server.clients[fromClient].SendIntToGame(userName);
     }

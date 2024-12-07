@@ -1,8 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ÇÃ·¹ÀÌ¾î °ü·Ã µ¥ÀÌÅÍ¿Í ·ÎÁ÷
+// í”Œë ˆì´ì–´ ê´€ë ¨ ë°ì´í„°ì™€ ë¡œì§
 
 public class Player : MonoBehaviour
 {
@@ -10,19 +10,19 @@ public class Player : MonoBehaviour
     public string userName;
 
     public CharacterController controller;
-    public Transform shootOrigin; // ÃÑ¾Ë ³ª°¡´Â À§Ä¡
+    public Transform shootOrigin; // ì´ì•Œ ë‚˜ê°€ëŠ” ìœ„ì¹˜
 
     public float gravity = -9.81f;
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
-    public float throwForce = 600f; // ´øÁö´Â Èû
+    public float throwForce = 600f; // ë˜ì§€ëŠ” í˜
     public float hp;
     public float maxHP = 100f;
-    public int itemAmount = 0;  // ÇöÀç ¾ÆÀÌÅÛ °¹¼ö
-    public int maxItemAmount = 3;   // ¾ÆÀÌÅÛ ÃÖ´ë °¹¼ö
+    public int itemAmount = 0;  // í˜„ì¬ ì•„ì´í…œ ê°¯ìˆ˜
+    public int maxItemAmount = 3;   // ì•„ì´í…œ ìµœëŒ€ ê°¯ìˆ˜
 
     private bool[] inputs;
-    private float yVelocity = 0; // ÇÃ·¹ÀÌ¾î ¼öÁ÷ ¼Óµµ ÀúÀå
+    private float yVelocity = 0; // í”Œë ˆì´ì–´ ìˆ˜ì§ ì†ë„ ì €ì¥
 
     private void Start()
     {
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (hp <= 0f) return; // ¿©±â¿¡ ½Ã°£ Á¾·á, ¾ÆÁ÷ »ó´ë¹æÀÌ ¾Èµé¾î ¿ÈÀ» Ã¼Å©ÇÏ´Â º¯¼ö ³Ö±â
+        if (hp <= 0f) return; // ì—¬ê¸°ì— ì‹œê°„ ì¢…ë£Œ, ì•„ì§ ìƒëŒ€ë°©ì´ ì•ˆë“¤ì–´ ì˜´ì„ ì²´í¬í•˜ëŠ” ë³€ìˆ˜ ë„£ê¸°
 
         Vector2 inputDirection = Vector2.zero;
         if (inputs[0])
@@ -137,14 +137,14 @@ public class Player : MonoBehaviour
         ServerSend.PlayerReSpawned(this);
     }
 
-    public bool AttempPickUpItem()  // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛ Áİ±â ½Ãµµ
+    public bool AttempPickUpItem()  // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œ ì¤ê¸° ì‹œë„
     {
-        if(itemAmount >= maxItemAmount) // ÀÌ¹Ì ÇÃ·¹ÀÌ¾î°¡ ÃÖ´ë ¾ÆÀÌÅÛ °¹¼ö¸¦ °¡Áö°í ÀÖ¾î¼­ false¸¦ ¹İÈ¯
+        if(itemAmount >= maxItemAmount) // ì´ë¯¸ í”Œë ˆì´ì–´ê°€ ìµœëŒ€ ì•„ì´í…œ ê°¯ìˆ˜ë¥¼ ê°€ì§€ê³  ìˆì–´ì„œ falseë¥¼ ë°˜í™˜
         {
-            return false;   // ¾ÆÀÌÅÛ Áİ±â ½ÇÆĞ
+            return false;   // ì•„ì´í…œ ì¤ê¸° ì‹¤íŒ¨
         }
 
-        itemAmount++;   // °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ °¹¼ö Áõ°¡
-        return true;    // ¾ÆÀÌÅÛ Áİ±â ¼º°ø
+        itemAmount++;   // ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œ ê°¯ìˆ˜ ì¦ê°€
+        return true;    // ì•„ì´í…œ ì¤ê¸° ì„±ê³µ
     }
 }
