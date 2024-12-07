@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-// 네트워크를 통해 다양한 패킷을 생성하여 전송을 정의하는 클래스
+// 패킷을 전송하는 메소드
+// 패킷을 생성하는 메소드
 
+// 위 두개의 작업을 하는 클래스
 public class ServerSend
 {
-    // 아래의 Send 메서드 들은 전송할 패킷을을 준비하는 메소드
-    // 클라이언트 버퍼에 전달받은 패킷 데이터를 저장
+    // 아래의 Send 메서드들은 패킷을 전송
+
+    // Server.clients[toClient].tcp.SendData(packet);
+    // 해당 코드를 공부해서 설명이 필요하다
 
     // 중요한 정보는 TCP를 이용하고
     // 반대로 중요하지 않거나 빠르게 통신이 필요한 경우는 UDP를 사용
@@ -69,8 +73,8 @@ public class ServerSend
     }
 
     #region Packet
-    // 패킷에 데이터를 입력
-    // 위의 전송 메서드를 통해서 전송
+    // 패킷에 필요한 데이터를 입력
+    // 위의 적절한 전송 메서드를 통해서 전송
 
     public static void Welcome(int toClient, string m) // 매개변수 => 어떤 클라이언트, 메세지 
     {
@@ -161,7 +165,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemSpawned(int spawnerId)
+    public static void ItemSpawned(int spawnerId)   // 아이템 데이터 패킷 생성
     {
         using (Packet packet = new Packet((int)ServerPackets.itemSpawned))
         {
@@ -171,7 +175,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemPickedUp(int spawnerId, int byPlayer)
+    public static void ItemPickedUp(int spawnerId, int byPlayer)    // 플레이어가 아이템을 획득했다는 데이터 패킷 생성
     {
         using (Packet packet = new Packet((int)ServerPackets.itemPickedUp))
         {

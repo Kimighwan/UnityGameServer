@@ -18,8 +18,8 @@ public class Player : MonoBehaviour
     public float throwForce = 600f; // 던지는 힘
     public float hp;
     public float maxHP = 100f;
-    public int itemAmount = 0;
-    public int maxItemAmount = 3;
+    public int itemAmount = 0;  // 현재 아이템 갯수
+    public int maxItemAmount = 3;   // 아이템 최대 갯수
 
     private bool[] inputs;
     private float yVelocity = 0; // 플레이어 수직 속도 저장
@@ -137,14 +137,14 @@ public class Player : MonoBehaviour
         ServerSend.PlayerReSpawned(this);
     }
 
-    public bool AttempPickUpItem()
+    public bool AttempPickUpItem()  // 플레이어가 아이템 줍기 시도
     {
         if(itemAmount >= maxItemAmount) // 이미 플레이어가 최대 아이템 갯수를 가지고 있어서 false를 반환
         {
-            return false;
+            return false;   // 아이템 줍기 실패
         }
 
-        itemAmount++;
-        return true;
+        itemAmount++;   // 가지고 있는 아이템 갯수 증가
+        return true;    // 아이템 줍기 성공
     }
 }

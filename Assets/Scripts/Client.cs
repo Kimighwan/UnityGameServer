@@ -216,6 +216,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
         foreach(ItemSpawner itemSpawner in ItemSpawner.spawners.Values)
         {
             ServerSend.CreateItemSpawner(clientId, itemSpawner.spawnerId, itemSpawner.transform.position, itemSpawner.hasItem);
+            // 클라이언트에 존재하는 각 아이템 스포너에 대한 패킷을 전송한다.
         }
     }
 
