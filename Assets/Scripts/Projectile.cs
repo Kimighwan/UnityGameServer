@@ -42,7 +42,7 @@ public class Projectile : MonoBehaviour
         throwByPlayer = _throwByPlayer;
     }
 
-    private IEnumerator ExplodeAfterTime()
+    private IEnumerator ExplodeAfterTime() // 어디에 충돌하지 않아도 10초 뒤에 터지도록 설정
     {
         yield return new WaitForSeconds(10f);
 
