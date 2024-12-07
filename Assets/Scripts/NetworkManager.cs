@@ -23,11 +23,16 @@ public class NetworkManager : MonoBehaviour
 
     private void Start() // 서버 시작 
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;   // 수직 동기화 비활성화
+        Application.targetFrameRate = 60; // 게임 프레임 60으로 고정
 
         Server.Start(2, 33374); // 사용되지 않는 포트 번호로 서버 열기, 플레이어 수는 2명
                                 // https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers 참고
+    }
+
+    private void Update()
+    {
+        StartGameTime();
     }
 
     private void OnApplicationQuit()
@@ -44,5 +49,46 @@ public class NetworkManager : MonoBehaviour
     public Projectile InstantiateProjectile(Transform shootOrigin)
     {
         return Instantiate(projectilePrefab, shootOrigin.position + shootOrigin.forward * 0.7f, Quaternion.identity).GetComponent<Projectile>();
+    }
+
+    public bool CheckPlayer()     // 접속한 플레이어 체크
+    {
+        bool checkPlayer = false;
+
+        if (Server.clients[1].player == null)
+            checkPlayer = false;
+
+        else if(Server.clients[1].player != null)
+        {
+            if (Server.clients[2].player != null)
+                checkPlayer = true;
+            else
+                checkPlayer = false;
+        }
+
+        return checkPlayer;
+    }
+
+    public void StartGameTime()
+    {
+        if(CheckPlayer())
+            StartCoroutine(StartTime());
+    }
+
+    private IEnumerator StartTime()
+    {
+        yield return new WaitForSeconds(3f); 
+        // 3초 카운트 다운
+        // 클라이언트에서도 3.. 2.. 1.. 카운트 UI 표시
+
+        // 60초 타이머 시작
+        // 클라이언트 중간 상단에 타이머 표시
+
+        // 60초 타이머 종료시 몇승패 집계
+
+        // 화면에 승패 UI 표시
+        // 클라이언트에서도 승패 UI 표시
+
+        // 3초후 서버 종료
     }
 }

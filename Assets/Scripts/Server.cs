@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class Server
 {
@@ -37,6 +38,7 @@ public class Server
 
         Debug.Log($"포트 번호 : {port}로 서버 시작!!!");
     }
+
 
     private static void TcpConnectCallBack(IAsyncResult _result) // 매개변수의 IAsyncResult는 비동기 작업의 상태
     {
