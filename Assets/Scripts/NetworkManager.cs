@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,6 +66,7 @@ public class NetworkManager : MonoBehaviour
                 checkPlayer = false;
         }
 
+        ServerSend.PlayerCheck(checkPlayer);
         return checkPlayer;
     }
 
@@ -77,10 +78,11 @@ public class NetworkManager : MonoBehaviour
 
     private IEnumerator StartTime()
     {
-        yield return new WaitForSeconds(3f); 
+        yield return new WaitForSeconds(3f);
         // 3초 카운트 다운
         // 클라이언트에서도 3.. 2.. 1.. 카운트 UI 표시
 
+        yield return new WaitForSeconds(3f);
         // 60초 타이머 시작
         // 클라이언트 중간 상단에 타이머 표시
 

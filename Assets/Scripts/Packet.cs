@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +23,7 @@ public enum ServerPackets
     spawnProjectile,
     projectilePostion,
     projectileExploded,
+    playerCheck,
 }
 
 /// <summary>Sent from client to server.</summary>

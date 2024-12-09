@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -215,6 +215,16 @@ public class ServerSend
         {
             packet.Write(projectile.id);
             packet.Write(projectile.transform.position);
+
+            SendTCPDataToAll(packet);
+        }
+    }
+
+    public static void PlayerCheck(bool check)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.playerCheck))
+        {
+            packet.Write(check);
 
             SendTCPDataToAll(packet);
         }
