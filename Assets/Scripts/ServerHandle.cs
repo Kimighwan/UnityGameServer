@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,7 @@ public class ServerHandle
         Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} 성공적으로 연결완료! / Player {fromClient}.");
         if (fromClient != clientChk)
         {
-            Debug.Log($"Player \"{userName}\" (ID: {fromClient})는 잘못된 ID를 가진다 ({clientChk})");
+            Debug.Log($"Player \"{userName}\" (ID: {fromClient}) 클라이언트 ID가 일치하지 않습니다. ({clientChk})");
         }
         Server.clients[fromClient].SendIntToGame(userName);
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -123,7 +123,7 @@ public class Server
             clients.Add(i, new Client(i));
         }
 
-        packetHandlers = new Dictionary<int, PacketHandler>()
+        packetHandlers = new Dictionary<int, PacketHandler>()   // 패킷을 받음
             {
                 {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },

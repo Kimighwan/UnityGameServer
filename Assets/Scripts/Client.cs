@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -49,9 +49,8 @@ public class Client // 클라이언트 정보를 저장하는 클래스
             stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null); // NetworkStream 메소드를 통해 읽는다
                                                                                    // 읽은 결과를 비동기 콜백 함수로 넘긴다.
 
-            ServerSend.Welcome(id, "Welcom Server!!!");
+            ServerSend.Welcome(id, "서버 연결!");
         }
-
 
         public void SendData(Packet packet)
         {
@@ -67,7 +66,6 @@ public class Client // 클라이언트 정보를 저장하는 클래스
                 Debug.Log($"Error sending data to player {id} TCP : {m}");
             }
         }
-
 
         private void ReceiveCallBack(IAsyncResult _result)
         {
