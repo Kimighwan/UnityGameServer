@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,13 +42,6 @@ public class Projectile : MonoBehaviour
         throwByPlayer = _throwByPlayer;
     }
 
-    private IEnumerator ExplodeAfterTime() // 어디에 충돌하지 않아도 10초 뒤에 터지도록 설정
-    {
-        yield return new WaitForSeconds(10f);
-
-        Explode();
-    }
-
     private void Explode()
     {
         ServerSend.ProjectileExploded(this);
@@ -62,5 +55,12 @@ public class Projectile : MonoBehaviour
 
         projectiles.Remove(id);
         Destroy(gameObject);
+    }
+
+    private IEnumerator ExplodeAfterTime() // 어디에 충돌하지 않아도 10초 뒤에 터지도록 설정
+    {
+        yield return new WaitForSeconds(10f);
+
+        Explode();
     }
 }
