@@ -4562,7 +4562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 8174487951150271041, guid: 87706f451c7acb546afec470b0233274, type: 3}
-  projectilePrefab: {fileID: 281209815636681083, guid: f6b9535d5f98ddc46a94030548b988b6, type: 3}
+  projectilePrefab: {fileID: 6125745697530060056, guid: ba6a7f4c4a1ab774eb99ac40f2afeaca, type: 3}
 --- !u!114 &1704585562
 MonoBehaviour:
   m_ObjectHideFlags: 0
