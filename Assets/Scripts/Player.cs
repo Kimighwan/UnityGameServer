@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
             hp = 0f;
             dieCount++;
             controller.enabled = false;
-            transform.position = new Vector3(0f, 25f, 0f);
+            transform.position = NetworkManager.instance.randomSpawnPos[Random.Range(0, 5)].position;
             ServerSend.PlayerPosition(this);
             ServerSend.PlayerDieCount(this);
             StartCoroutine("ReSpawn");

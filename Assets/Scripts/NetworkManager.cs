@@ -9,6 +9,10 @@ public class NetworkManager : MonoBehaviour
     public GameObject playerPrefab; // 플레이어 객체
     public GameObject projectilePrefab; // 슈루탄 객체
 
+    public Transform[] randomSpawnPos;
+    public Transform[] spawnPos;
+    private int spawnOrder = 0;
+
     private void Awake() // 유니티 엔진의 생명 주기 함수 -> 게임 실행시 초기에 한 번 실행되는 함수
     {
         if (instance == null) // 아직 만들어지지 않았다면 현재 객체 할당
@@ -43,7 +47,7 @@ public class NetworkManager : MonoBehaviour
 
     public Player InstantiatePlayer() // 플레이어 생성
     {
-        return Instantiate(playerPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();
+        return Instantiate(playerPrefab, spawnPos[spawnOrder++].position, Quaternion.identity).GetComponent<Player>();
     }
 
     public Projectile InstantiateProjectile(Transform shootOrigin)
