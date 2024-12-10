@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public float maxHP = 100f;
     public int itemAmount = 0;  // 현재 아이템 갯수
     public int maxItemAmount = 3;   // 아이템 최대 갯수
+    public int dieCount = 0;
 
     private bool[] inputs;
     private float yVelocity = 0; // 플레이어 수직 속도 저장
@@ -119,9 +120,11 @@ public class Player : MonoBehaviour
         if(hp <= 0f)
         {
             hp = 0f;
+            dieCount++;
             controller.enabled = false;
             transform.position = new Vector3(0f, 25f, 0f);
             ServerSend.PlayerPosition(this);
+            ServerSend.PlayerDieCount(this);
             StartCoroutine("ReSpawn");
         }
 
@@ -146,5 +149,10 @@ public class Player : MonoBehaviour
 
         itemAmount++;   // 가지고 있는 아이템 갯수 증가
         return true;    // 아이템 줍기 성공
+    }
+
+    public void SetDieCount(int count)
+    {
+        dieCount = count;
     }
 }

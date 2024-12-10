@@ -230,11 +230,21 @@ public class ServerSend
         }
     }
 
-    public static void GameResult(bool result)
+    //public static void GameResult(bool result)
+    //{
+    //    using (Packet packet = new Packet((int)ServerPackets.playerCheck))
+    //    {
+    //        packet.Write(result);
+
+    //        SendTCPDataToAll(packet);
+    //    }
+    //}
+
+    public static void PlayerDieCount(Player player)
     {
-        using (Packet packet = new Packet((int)ServerPackets.playerCheck))
+        using (Packet packet = new Packet((int)ServerPackets.playerDieCount))
         {
-            packet.Write(result);
+            packet.Write(player.id);
 
             SendTCPDataToAll(packet);
         }

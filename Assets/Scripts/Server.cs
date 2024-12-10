@@ -129,7 +129,6 @@ public class Server
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 {(int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
                 {(int)ClientPackets.playerThrowItem, ServerHandle.PlayerThrowItem },
-                {(int)ClientPackets.playerDieCount, ServerHandle.PlayerDieCount },
             };
         Debug.Log("Init Packet");
     }
