@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-// 패킷을 전송하는 메소드
-// 패킷을 생성하는 메소드
+// 패킷을 전송하는 메소드 함수들
+// 패킷을 생성하는 메소드 함수들
 
-// 위 두개의 작업을 하는 클래스
+// 위 두개의 작업을 하는 정의한 클래스
 public class ServerSend
 {
     // 아래의 Send 메서드들은 패킷을 전송
@@ -18,19 +18,19 @@ public class ServerSend
     // 반대로 중요하지 않거나 빠르게 통신이 필요한 경우는 UDP를 사용
     // 또 지속적으로 데이터를 전송하는 경우 데이터를 잃어도 계속 전송하기에 UDP를 사용
 
-    private static void SendTCPData(int toClient, Packet packet)
+    private static void SendTCPData(int toClient, Packet packet) // TCP로 패킷 전달
     {
         packet.WriteLength();
-        Server.clients[toClient].tcp.SendData(packet);
+        Server.clients[toClient].tcp.SendData(packet); // 패킷 전달
     }
 
-    private static void SendUDPData(int toClient, Packet packet)
+    private static void SendUDPData(int toClient, Packet packet) // UDP로 패킷 전달
     {
         packet.WriteLength();
         Server.clients[toClient].udp.SendData(packet);
     }
 
-    private static void SendTCPDataToAll(Packet packet)
+    private static void SendTCPDataToAll(Packet packet) // TCP로 모든 클라이언트에게 패킷 전달
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maxPlayer; i++)
@@ -39,7 +39,7 @@ public class ServerSend
         }
     }
 
-    private static void SendTCPDataToAll(int exceptClinet, Packet packet)
+    private static void SendTCPDataToAll(int exceptClinet, Packet packet) // TCP로 모든 클라이언트에게  패킷 전달
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maxPlayer; i++)
@@ -51,7 +51,7 @@ public class ServerSend
         }
     }
 
-    private static void SendUDPDataToAll(Packet packet)
+    private static void SendUDPDataToAll(Packet packet) // UDP로 모든 클라이언트에게  패킷 전달
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maxPlayer; i++)
@@ -60,7 +60,7 @@ public class ServerSend
         }
     }
 
-    private static void SendUDPDataToAll(int exceptClinet, Packet packet)
+    private static void SendUDPDataToAll(int exceptClinet, Packet packet) // UDP로 모든 클라이언트에게  패킷 전달
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maxPlayer; i++)
@@ -72,11 +72,9 @@ public class ServerSend
         }
     }
 
-    #region Packet
-    // 패킷에 필요한 데이터를 입력
-    // 위의 적절한 전송 메서드를 통해서 전송
+    #region Packet // 패킷에 필요한 데이터를 입력 // 위의 적절한 전송 메서드를 통해서 전송
 
-    public static void Welcome(int toClient, string m) // 매개변수 => 어떤 클라이언트, 메세지 
+    public static void Welcome(int toClient, string m) // 어떤 클라이언트에게 보내고 싶은 메세지를 담은 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.welcome))
         {
@@ -87,7 +85,7 @@ public class ServerSend
         }
     }
 
-    public static void SpawnPlayer(int toClient, Player player)
+    public static void SpawnPlayer(int toClient, Player player) // 플레이어 스폰 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.spawnPlayer))
         {
@@ -100,7 +98,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerPosition(Player player)
+    public static void PlayerPosition(Player player) // 플레이어 위치 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerPosition))
         {
@@ -111,7 +109,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerRotation(Player player)
+    public static void PlayerRotation(Player player) // 플레이어 회전 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerRotation))
         {
@@ -122,7 +120,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerDisconnected(int playerId)
+    public static void PlayerDisconnected(int playerId) // 플레이어 연결 끊김 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerDisconnected))
         {
@@ -132,7 +130,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerHP(Player player)
+    public static void PlayerHP(Player player) // 플레이어 체력 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerHP))
         {
@@ -143,7 +141,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerReSpawned(Player player)
+    public static void PlayerReSpawned(Player player) // 플레이어 리스폰 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerReSpawned))
         {
@@ -153,7 +151,7 @@ public class ServerSend
         }
     }
 
-    public static void CreateItemSpawner(int toClient, int spawnerId, Vector3 spawnerPos, bool hasItem)
+    public static void CreateItemSpawner(int toClient, int spawnerId, Vector3 spawnerPos, bool hasItem) // 아이템 생성기 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.createItemSpawner))
         {
@@ -165,7 +163,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemSpawned(int spawnerId)   // 아이템 데이터 패킷 생성
+    public static void ItemSpawned(int spawnerId) // 아이템 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.itemSpawned))
         {
@@ -175,7 +173,7 @@ public class ServerSend
         }
     }
 
-    public static void ItemPickedUp(int spawnerId, int byPlayer)    // 플레이어가 아이템을 획득했다는 데이터 패킷 생성
+    public static void ItemPickedUp(int spawnerId, int byPlayer) // 플레이어가 아이템을 획든한 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.itemPickedUp))
         {
@@ -186,7 +184,7 @@ public class ServerSend
         }
     }
 
-    public static void SpawnProjectile(Projectile projectile, int throwByPlayer)
+    public static void SpawnProjectile(Projectile projectile, int throwByPlayer) // 폭탄 생성 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.spawnProjectile))
         {
@@ -198,7 +196,7 @@ public class ServerSend
         }
     }
 
-    public static void ProjectilePosition(Projectile projectile)
+    public static void ProjectilePosition(Projectile projectile) // 폭탄 위치 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.projectilePostion))
         {
@@ -209,7 +207,7 @@ public class ServerSend
         }
     }
 
-    public static void ProjectileExploded(Projectile projectile)
+    public static void ProjectileExploded(Projectile projectile) // 폭탄 폭발 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.projectileExploded))
         {
@@ -220,7 +218,7 @@ public class ServerSend
         }
     }
 
-    public static void PlayerCheck(bool check)
+    public static void PlayerCheck(bool check) // 플레이어 2명 접속 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerCheck))
         {
@@ -230,17 +228,7 @@ public class ServerSend
         }
     }
 
-    //public static void GameResult(bool result)
-    //{
-    //    using (Packet packet = new Packet((int)ServerPackets.playerCheck))
-    //    {
-    //        packet.Write(result);
-
-    //        SendTCPDataToAll(packet);
-    //    }
-    //}
-
-    public static void PlayerDieCount(Player player)
+    public static void PlayerDieCount(Player player) // 플레이어 죽은 횟수 정보 패킷
     {
         using (Packet packet = new Packet((int)ServerPackets.playerDieCount))
         {
