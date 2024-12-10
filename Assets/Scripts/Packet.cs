@@ -24,6 +24,7 @@ public enum ServerPackets
     projectilePostion,
     projectileExploded,
     playerCheck,
+    gameResult,
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -33,6 +34,7 @@ public enum ClientPackets
     playerMovement,
     playerShoot,
     playerThrowItem,
+    playerDieCount,
 }
 
 public class Packet : IDisposable 

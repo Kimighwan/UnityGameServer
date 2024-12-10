@@ -44,4 +44,11 @@ public class ServerHandle
 
         Server.clients[fromClient].player.ThrowItem(throwDirection);
     }
+
+    public static void PlayerDieCount(int fromClient, Packet packet)
+    {
+        int playerDieCount = packet.ReadInt();
+
+        Result.result[fromClient] = playerDieCount;
+    }
 }

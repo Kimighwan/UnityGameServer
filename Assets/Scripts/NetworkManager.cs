@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviour
 
     private void Update()
     {
-        StartGameTime();
+        CheckPlayer();
     }
 
     private void OnApplicationQuit()
@@ -70,27 +70,4 @@ public class NetworkManager : MonoBehaviour
         return checkPlayer;
     }
 
-    public void StartGameTime()
-    {
-        if(CheckPlayer())
-            StartCoroutine(StartTime());
-    }
-
-    private IEnumerator StartTime()
-    {
-        yield return new WaitForSeconds(3f);
-        // 3초 카운트 다운
-        // 클라이언트에서도 3.. 2.. 1.. 카운트 UI 표시
-
-        yield return new WaitForSeconds(3f);
-        // 60초 타이머 시작
-        // 클라이언트 중간 상단에 타이머 표시
-
-        // 60초 타이머 종료시 몇승패 집계
-
-        // 화면에 승패 UI 표시
-        // 클라이언트에서도 승패 UI 표시
-
-        // 3초후 서버 종료
-    }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
             StartCoroutine("ReSpawn");
         }
 
-        ServerSend.PlayerReSpawned(this);
+        ServerSend.PlayerHP(this);
     }
 
     private IEnumerator ReSpawn()

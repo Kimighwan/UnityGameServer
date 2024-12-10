@@ -229,5 +229,15 @@ public class ServerSend
             SendTCPDataToAll(packet);
         }
     }
+
+    public static void GameResult(bool result)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.playerCheck))
+        {
+            packet.Write(result);
+
+            SendTCPDataToAll(packet);
+        }
+    }
     #endregion
 }
