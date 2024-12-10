@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// int형 데이터를 그냥 보낼 수 없다.
+// int형 뿐만 아니라 다양한 데이터를 그냥 보낼 수 없다.
 // 데이터 유형을 패킷 클래스로 통해 바이트로 변환하여 송수신 한다
 
-
-public enum ServerPackets
+public enum ServerPackets // 서버가 전송하는 패킷 종류  
 {
     welcome = 1,
     spawnPlayer,
@@ -28,8 +27,7 @@ public enum ServerPackets
     playerDieCount,
 }
 
-/// <summary>Sent from client to server.</summary>
-public enum ClientPackets
+public enum ClientPackets// 클라이언트가 전송하는 패킷 종류
 {
     welcomeReceived = 1,
     playerMovement,
@@ -37,7 +35,7 @@ public enum ClientPackets
     playerThrowItem,
 }
 
-public class Packet : IDisposable 
+public class Packet : IDisposable // 패킷에 필요한 변수와 함수
 {
     private List<byte> buffer;
     private byte[] readableBuffer;
@@ -49,68 +47,59 @@ public class Packet : IDisposable
         readPos = 0; // 읽을 위치를 0으로 설정
     }
 
-    public Packet(int _id) // ID를 받는 생성자
+    public Packet(int id) // id를 이용해 패킷 생성
     {
         buffer = new List<byte>();
         readPos = 0;
 
-        Write(_id); // 버퍼에 id를 저장
+        Write(id); // 버퍼에 id를 저장
     }
 
-    public Packet(byte[] _data) // byte 단위 데이터를 받는 생성자
+    public Packet(byte[] data) // byte 데이터를 이용해 패킷 생성
     {
         buffer = new List<byte>();
         readPos = 0;
 
-        SetBytes(_data);
+        SetBytes(data);
     }
 
     #region Functions
-    /// <summary>Sets the packet's content and prepares it to be read.</summary>
-    /// <param name="_data">The bytes to add to the packet.</param>
-    public void SetBytes(byte[] _data)
+
+    public void SetBytes(byte[] data)  // 데이터를 일기위한 버퍼 준비
     {
-        Write(_data);
+        Write(data);
         readableBuffer = buffer.ToArray();
     }
 
-    /// <summary>Inserts the length of the packet's content at the start of the buffer.</summary>
-    public void WriteLength()
+    public void WriteLength() // 버퍼 시작 부분에 패킷 길이를 삽입
     {
         buffer.InsertRange(0, BitConverter.GetBytes(buffer.Count)); // Insert the byte length of the packet at the very beginning
     }
 
-    /// <summary>Inserts the given int at the start of the buffer.</summary>
-    /// <param name="_value">The int to insert.</param>
-    public void InsertInt(int _value)
+    public void InsertInt(int value)  // 버퍼의 시작 부분에 주어진 int를 삽입
     {
-        buffer.InsertRange(0, BitConverter.GetBytes(_value)); // Insert the int at the start of the buffer
+        buffer.InsertRange(0, BitConverter.GetBytes(value)); // Insert the int at the start of the buffer
     }
 
-    /// <summary>Gets the packet's content in array form.</summary>
-    public byte[] ToArray()
+    public byte[] ToArray() // 배열 형식으로 패킷을 가져오기
     {
         readableBuffer = buffer.ToArray();
         return readableBuffer;
     }
 
-    /// <summary>Gets the length of the packet's content.</summary>
-    public int Length()
+    public int Length() // 패킷 길이 반환
     {
         return buffer.Count; // Return the length of buffer
     }
 
-    /// <summary>Gets the length of the unread data contained in the packet.</summary>
-    public int UnreadLength()
+    public int UnreadLength() // 아직 읽지 않은 패킷의 길이를 반환
     {
         return Length() - readPos; // Return the remaining length (unread)
     }
 
-    /// <summary>Resets the packet instance to allow it to be reused.</summary>
-    /// <param name="_shouldReset">Whether or not to reset the packet.</param>
-    public void Reset(bool _shouldReset = true)
+    public void Reset(bool shouldReset = true) // 패킷 초기화
     {
-        if (_shouldReset)
+        if (shouldReset)
         {
             buffer.Clear(); // Clear buffer
             readableBuffer = null;
@@ -118,87 +107,88 @@ public class Packet : IDisposable
         }
         else
         {
-            readPos -= 4; // "Unread" the last read int
+            readPos = 4; // "Unread" the last read int
         }
     }
     #endregion
 
-    #region Write Data 
-    // 빋은 다양한 데이터의 형식을 byte단위로 바꾸어 버퍼에 저장
+    #region Write Data // 다양한 데이터의 형식을 버퍼에 저장하는 함수들
 
-    public void Write(byte _value)
+    public void Write(byte value)
     {
-        buffer.Add(_value);
+        buffer.Add(value);
     }
 
-    public void Write(byte[] _value)
+    public void Write(byte[] value) // byte 배열 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(_value);
+        buffer.AddRange(value);
     }
 
-    public void Write(short _value)
+    public void Write(short value) // short 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(int _value)
+    public void Write(int value) // int 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(long _value)
+    public void Write(long value) // long 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(float _value)
+    public void Write(float value) // float 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(bool _value)
+    public void Write(bool value) // bool 데이터 형식을 byte로 바꾸어 저장
     {
-        buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(string _value)
+    public void Write(string value) // string 데이터 형식을 byte로 바꾸어 저장
     {
-        Write(_value.Length); // Add the length of the string to the packet
-        buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
+        Write(value.Length); // Add the length of the string to the packet
+        buffer.AddRange(Encoding.ASCII.GetBytes(value)); // Add the string itself
     }
 
-    public void Write(Vector3 _value)
+    public void Write(Vector3 value) // Vector3 데이터 형식을 byte로 바꾸어 저장
     {
-        Write(_value.x);
-        Write(_value.y);
-        Write(_value.z);
+        Write(value.x);
+        Write(value.y);
+        Write(value.z);
     }
 
-    public void Write(Quaternion _value)
+    public void Write(Quaternion value) // Quaternion 데이터 형식을 byte로 바꾸어 저장
     {
-        Write(_value.x);
-        Write(_value.y);
-        Write(_value.z);
-        Write(_value.w);
+        Write(value.x);
+        Write(value.y);
+        Write(value.z);
+        Write(value.w);
     }
 
     #endregion
 
-    #region Read Data
-    // 읽기버파에 저장된 데이터를 원하는 형식으로 읽는 함수
+    #region Read Data // 패킷의 데이터를 원하는 형식으로 읽는 함수들
 
-    public byte ReadByte(bool _moveReadPos = true)
+    // moveReadPos : 버퍼의 읽기 위치를 이동할지 여부
+    // true이면 위치를 이동
+
+    public byte ReadByte(bool moveReadPos = true) // Byte 읽기
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            byte _value = readableBuffer[readPos]; // Get the byte at readPos' position
-            if (_moveReadPos)
+            byte value = readableBuffer[readPos]; // Get the byte at readPos' position
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
+                // If moveReadPos is true
                 readPos += 1; // Increase readPos by 1
             }
-            return _value; // Return the byte
+            return value; // Return the byte
         }
         else
         {
@@ -206,18 +196,19 @@ public class Packet : IDisposable
         }
     }
 
-    public byte[] ReadBytes(int _length, bool _moveReadPos = true)
+    // length 바이트 배열의 길이
+    public byte[] ReadBytes(int length, bool moveReadPos = true) // 패킷에서 바이트 배열을 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            byte[] _value = buffer.GetRange(readPos, _length).ToArray(); // Get the bytes at readPos' position with a range of _length
-            if (_moveReadPos)
+            byte[] value = buffer.GetRange(readPos, length).ToArray(); // Get the bytes at readPos' position with a range of length
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
-                readPos += _length; // Increase readPos by _length
+                // If moveReadPos is true
+                readPos += length; // Increase readPos by length
             }
-            return _value; // Return the bytes
+            return value; // Return the bytes
         }
         else
         {
@@ -225,18 +216,18 @@ public class Packet : IDisposable
         }
     }
 
-    public short ReadShort(bool _moveReadPos = true)
+    public short ReadShort(bool moveReadPos = true) // 패킷에서 short 데이터 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            short _value = BitConverter.ToInt16(readableBuffer, readPos); // Convert the bytes to a short
-            if (_moveReadPos)
+            short value = BitConverter.ToInt16(readableBuffer, readPos); // Convert the bytes to a short
+            if (moveReadPos)
             {
-                // If _moveReadPos is true and there are unread bytes
+                // If moveReadPos is true and there are unread bytes
                 readPos += 2; // Increase readPos by 2
             }
-            return _value; // Return the short
+            return value; // Return the short
         }
         else
         {
@@ -244,18 +235,18 @@ public class Packet : IDisposable
         }
     }
 
-    public int ReadInt(bool _moveReadPos = true)
+    public int ReadInt(bool moveReadPos = true) // 패킷에서 int 데이터 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            int _value = BitConverter.ToInt32(readableBuffer, readPos); // Convert the bytes to an int
-            if (_moveReadPos)
+            int value = BitConverter.ToInt32(readableBuffer, readPos); // Convert the bytes to an int
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
+                // If moveReadPos is true
                 readPos += 4; // Increase readPos by 4
             }
-            return _value; // Return the int
+            return value; // Return the int
         }
         else
         {
@@ -263,18 +254,18 @@ public class Packet : IDisposable
         }
     }
 
-    public long ReadLong(bool _moveReadPos = true)
+    public long ReadLong(bool moveReadPos = true) // 패킷에서 long 데이터 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            long _value = BitConverter.ToInt64(readableBuffer, readPos); // Convert the bytes to a long
-            if (_moveReadPos)
+            long value = BitConverter.ToInt64(readableBuffer, readPos); // Convert the bytes to a long
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
+                // If moveReadPos is true
                 readPos += 8; // Increase readPos by 8
             }
-            return _value; // Return the long
+            return value; // Return the long
         }
         else
         {
@@ -282,18 +273,18 @@ public class Packet : IDisposable
         }
     }
 
-    public float ReadFloat(bool _moveReadPos = true)
+    public float ReadFloat(bool moveReadPos = true) // 패킷에서 float 데이터 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            float _value = BitConverter.ToSingle(readableBuffer, readPos); // Convert the bytes to a float
-            if (_moveReadPos)
+            float value = BitConverter.ToSingle(readableBuffer, readPos); // Convert the bytes to a float
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
+                // If moveReadPos is true
                 readPos += 4; // Increase readPos by 4
             }
-            return _value; // Return the float
+            return value; // Return the float
         }
         else
         {
@@ -301,18 +292,18 @@ public class Packet : IDisposable
         }
     }
 
-    public bool ReadBool(bool _moveReadPos = true)
+    public bool ReadBool(bool moveReadPos = true) // 패킷에서 bool 데이터 읽는 함수
     {
         if (buffer.Count > readPos)
         {
             // If there are unread bytes
-            bool _value = BitConverter.ToBoolean(readableBuffer, readPos); // Convert the bytes to a bool
-            if (_moveReadPos)
+            bool value = BitConverter.ToBoolean(readableBuffer, readPos); // Convert the bytes to a bool
+            if (moveReadPos)
             {
-                // If _moveReadPos is true
+                // If moveReadPos is true
                 readPos += 1; // Increase readPos by 1
             }
-            return _value; // Return the bool
+            return value; // Return the bool
         }
         else
         {
@@ -320,18 +311,18 @@ public class Packet : IDisposable
         }
     }
 
-    public string ReadString(bool _moveReadPos = true)
+    public string ReadString(bool moveReadPos = true) // 패킷에서 string 데이터 읽는 함수
     {
         try
         {
-            int _length = ReadInt(); // Get the length of the string
-            string _value = Encoding.ASCII.GetString(readableBuffer, readPos, _length); // Convert the bytes to a string
-            if (_moveReadPos && _value.Length > 0)
+            int length = ReadInt(); // Get the length of the string
+            string value = Encoding.ASCII.GetString(readableBuffer, readPos, length); // Convert the bytes to a string
+            if (moveReadPos && value.Length > 0)
             {
-                // If _moveReadPos is true string is not empty
-                readPos += _length; // Increase readPos by the length of the string
+                // If moveReadPos is true string is not empty
+                readPos += length; // Increase readPos by the length of the string
             }
-            return _value; // Return the string
+            return value; // Return the string
         }
         catch
         {
@@ -339,27 +330,25 @@ public class Packet : IDisposable
         }
     }
 
-    public Vector3 ReadVector3(bool _moveReadPos = true)
+    public Vector3 ReadVector3(bool moveReadPos = true) // 패킷에서 Vector3 데이터 읽는 함수
     {
-        return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+        return new Vector3(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));
     }
 
-    /// <summary>Reads a Quaternion from the packet.</summary>
-    /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-    public Quaternion ReadQuaternion(bool _moveReadPos = true)
+    public Quaternion ReadQuaternion(bool moveReadPos = true) // 패킷에서 Quaternion 데이터 읽는 함수
     {
-        return new Quaternion(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+        return new Quaternion(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));
     }
 
     #endregion
 
     private bool disposed = false;
 
-    protected virtual void Dispose(bool _disposing)
+    protected virtual void Dispose(bool disposing) // 패킷관련 리소스 해제
     {
         if (!disposed)
         {
-            if (_disposing)
+            if (disposing)
             {
                 buffer = null;
                 readableBuffer = null;

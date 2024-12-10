@@ -236,6 +236,4 @@ public class Client // 클라이언트 정보를 저장하는 클래스
 
         ServerSend.PlayerDisconnected(clientId);
     }
-
-    // 한글 깨짐 테스트
 }
