@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// int형 뿐만 아니라 다양한 데이터를 그냥 보낼 수 없다.
-// 데이터 유형을 패킷 클래스로 통해 바이트로 변환하여 송수신 한다
+// int형 뿐만 아니라 다양한 데이터를 그냥 보낼 수 없습니다.
+// 데이터 유형을 패킷 클래스로 통해 Byte로 변환하여 송수신 합니다.
+
+// 또한 패킷을 읽어 오면 Byte 데이터를 바로 사용할 수 없습니다.
+// 사용하고자 하는 곳에서 적절한 데이터형으로 변환하는 함수를 정의합니다.
 
 public enum ServerPackets // 서버가 전송하는 패킷 종류  
 {
-    welcome = 1,
+    init = 1,
     spawnPlayer,
     playerPosition,
     playerRotation,
@@ -23,13 +26,12 @@ public enum ServerPackets // 서버가 전송하는 패킷 종류
     projectilePostion,
     projectileExploded,
     playerCheck,
-    //gameResult,
     playerDieCount,
 }
 
 public enum ClientPackets// 클라이언트가 전송하는 패킷 종류
 {
-    welcomeReceived = 1,
+    init = 1,
     playerMovement,
     playerShoot,
     playerThrowItem,

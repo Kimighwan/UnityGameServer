@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public int id;
     public string userName;
 
-    public CharacterController controller;
+    public CharacterController controller; // 플레이어 이동
     public Transform shootOrigin; // 총알 나가는 위치
 
     public float gravity = -9.81f;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     }
 
 
-    public void Initialize(int _id, string _userName)
+    public void Initialize(int _id, string _userName)   // 플레이어 초기 설정
     {
         this.id = _id;
         userName = _userName;
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
         Move(inputDirection);
     }
 
-    private void Move(Vector2 inputDirection)
+    private void Move(Vector2 inputDirection)   // 플레이어 이동
     {
         Vector3 moveDirection = transform.right * inputDirection.x + transform.forward * inputDirection.y;
         moveDirection *= moveSpeed;
@@ -73,32 +73,32 @@ public class Player : MonoBehaviour
         yVelocity += gravity;
 
         moveDirection.y = yVelocity;
-        controller.Move(moveDirection);
+        controller.Move(moveDirection); // 해당 Vector로 이동
 
-        ServerSend.PlayerPosition(this);
-        ServerSend.PlayerRotation(this);
+        ServerSend.PlayerPosition(this);    // 플레이어 위치 정보 패킷 전송
+        ServerSend.PlayerRotation(this);    // 플레이어 회전 정보 패킷 전송
     }
 
-    public void SetInput(bool[] _inputs, Quaternion _rotation)
+    public void SetInput(bool[] _inputs, Quaternion _rotation)  // 초기 설정
     {
         inputs = _inputs;
         transform.rotation = _rotation;
     }
     
-    public void Shoot(Vector3 viewDirection)
+    public void Shoot(Vector3 viewDirection)    // 총알 발사
     {
         if (hp <= 0f) return;
 
-        if(Physics.Raycast(shootOrigin.position, viewDirection, out RaycastHit hit, 25f))
+        if (Physics.Raycast(shootOrigin.position, viewDirection, out RaycastHit hit, 25f))
         {
-            if(hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player"))
             {
                 hit.collider.GetComponent<Player>().TakeDamage(50f);
             }
         }
     }
 
-    public void ThrowItem(Vector3 viewDircret)
+    public void ThrowItem(Vector3 viewDircret)  // 수류탄 사용
     {
         if (hp <= 0f)
             return;
@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage)    // 피격 함수
     {
         if (hp <= 0f)
             return;
@@ -121,17 +121,17 @@ public class Player : MonoBehaviour
         {
             hp = 0f;
             dieCount++;
-            controller.enabled = false;
-            transform.position = NetworkManager.instance.randomSpawnPos[Random.Range(0, 5)].position;
-            ServerSend.PlayerPosition(this);
-            ServerSend.PlayerDieCount(this);
+            controller.enabled = false; // 움직임 X
+            transform.position = NetworkManager.instance.randomSpawnPos[Random.Range(0, 5)].position; // 리스폰 랜덤
+            ServerSend.PlayerPosition(this);    // 위치 정보 패킷 전송
+            ServerSend.PlayerDieCount(this);    // 죽은 횟수 패킷 전송
             StartCoroutine("ReSpawn");
         }
 
         ServerSend.PlayerHP(this);
     }
 
-    private IEnumerator ReSpawn()
+    private IEnumerator ReSpawn()   // 리스폰
     {
         yield return new WaitForSeconds(5f);
 
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         return true;    // 아이템 줍기 성공
     }
 
-    public void SetDieCount(int count)
+    public void SetDieCount(int count)  // 사망 횟수 체크
     {
         dieCount = count;
     }

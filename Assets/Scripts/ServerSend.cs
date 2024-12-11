@@ -6,7 +6,8 @@ using UnityEngine;
 // 패킷을 전송하는 메소드 함수들
 // 패킷을 생성하는 메소드 함수들
 
-// 위 두개의 작업을 하는 정의한 클래스
+// 위 두개의 작업을 정의한 클래스
+
 public class ServerSend
 {
     // 아래의 Send 메서드들은 패킷을 전송
@@ -74,9 +75,9 @@ public class ServerSend
 
     #region Packet // 패킷에 필요한 데이터를 입력 // 위의 적절한 전송 메서드를 통해서 전송
 
-    public static void Welcome(int toClient, string m) // 어떤 클라이언트에게 보내고 싶은 메세지를 담은 패킷
+    public static void Init(int toClient, string m) // 어떤 클라이언트에게 보내고 싶은 메세지를 담은 패킷
     {
-        using (Packet packet = new Packet((int)ServerPackets.welcome))
+        using (Packet packet = new Packet((int)ServerPackets.init))
         {
             packet.Write(m);
             packet.Write(toClient);
@@ -236,6 +237,6 @@ public class ServerSend
 
             SendTCPDataToAll(packet);
         }
-    }
+    }    
     #endregion
 }

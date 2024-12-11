@@ -5,7 +5,10 @@ using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
 
-public class Client // 클라이언트 정보를 저장하는 클래스
+// 클라이언트 관리 클래스
+// 클라이언트 정보를 저장하는 클래스
+
+public class Client 
 {
     public int clientId; // 클라이언트 ID
     public TCP tcp; // tcp 소켓 클래스 아래에서 직접 생성
@@ -20,9 +23,9 @@ public class Client // 클라이언트 정보를 저장하는 클래스
         udp = new UDP(clientId);
     }
 
-    public class TCP
+    public class TCP    // TCP 클래스
     {
-        public TcpClient socket; // 연결을 통해 얻는 TCP 클라이언트 소켓
+        public TcpClient socket; // 연결을 통해 얻는 TCP 소켓
 
         private readonly int id;
         private NetworkStream stream;
@@ -42,23 +45,23 @@ public class Client // 클라이언트 정보를 저장하는 클래스
 
             stream = socket.GetStream(); // 클라이언트로 부터 메세지를 받는다.
 
-            receiveData = new Packet();
+            receiveData = new Packet(); // 새로운 패킷 생성
 
             receiveBuffer = new byte[bufferSize];
 
             stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallBack, null); // NetworkStream 메소드를 통해 읽는다
                                                                                    // 읽은 결과를 비동기 콜백 함수로 넘긴다.
 
-            ServerSend.Welcome(id, "Server Connect!");
+            ServerSend.Init(id, "Server Connect!");
         }
 
-        public void SendData(Packet packet)
+        public void SendData(Packet packet) // 패킷 읽기
         {
             try
             {
                 if (socket != null)
                 {
-                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // 스트림을 읽음
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // 스트림에서 읽음
                 }
             }
             catch (Exception m)
@@ -67,7 +70,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
             }
         }
 
-        private void ReceiveCallBack(IAsyncResult _result)
+        private void ReceiveCallBack(IAsyncResult _result)  // 비동기적으로 계속 데이터를 읽기 위한 콜백 함수
         {
             try
             {
@@ -106,7 +109,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
                     return true;
             }
 
-            while (packetLength > 0 && packetLength <= receiveData.UnreadLength())
+            while (packetLength > 0 && packetLength <= receiveData.UnreadLength())  // 아직 남아 있는 데이터가 있다면
             {
                 byte[] packetBytes = receiveData.ReadBytes(packetLength);
                 ThreadManager.ExecuteOnMainThread(() =>
@@ -145,7 +148,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
         }
     }
 
-    public class UDP
+    public class UDP    // UDP 클래스
     {
         public IPEndPoint endPoint;
 
@@ -187,9 +190,9 @@ public class Client // 클라이언트 정보를 저장하는 클래스
         }
     }
 
-    public void SendIntToGame(string playerName)
+    public void SendIntToGame(string playerName)    // 플레이어 게임 접속시 설정
     {
-        player = NetworkManager.instance.InstantiatePlayer();
+        player = NetworkManager.instance.InstantiatePlayer();   // 플레이어 소환
         player.Initialize(clientId, playerName); // 플레이어 정보 초기화
 
         foreach (Client client in Server.clients.Values)
@@ -198,7 +201,7 @@ public class Client // 클라이언트 정보를 저장하는 클래스
             {
                 if (client.clientId != clientId)
                 {
-                    ServerSend.SpawnPlayer(clientId, client.player);
+                    ServerSend.SpawnPlayer(clientId, client.player);    // 플레이어 소환 패킷 전송
                 }
             }
         }

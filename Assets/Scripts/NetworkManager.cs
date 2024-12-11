@@ -6,11 +6,11 @@ public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager instance; // 해당 스크립트 객체를 참조하는 전역 변수
 
-    public GameObject playerPrefab; // 플레이어 객체
+    public GameObject playerPrefab;     // 플레이어 객체
     public GameObject projectilePrefab; // 슈루탄 객체
 
-    public Transform[] randomSpawnPos;
-    public Transform[] spawnPos;
+    public Transform[] randomSpawnPos;  // 리스폰 위치
+    public Transform[] spawnPos;        // 초기 스폰 위치
     private int spawnOrder = 0;
 
     private void Awake() // 유니티 엔진의 생명 주기 함수 -> 게임 실행시 초기에 한 번 실행되는 함수
@@ -36,7 +36,7 @@ public class NetworkManager : MonoBehaviour
 
     private void Update()
     {
-        CheckPlayer();
+        CheckPlayer();  // 플레이어 접속 수 체크
     }
 
     private void OnApplicationQuit()
@@ -50,7 +50,7 @@ public class NetworkManager : MonoBehaviour
         return Instantiate(playerPrefab, spawnPos[spawnOrder++].position, Quaternion.identity).GetComponent<Player>();
     }
 
-    public Projectile InstantiateProjectile(Transform shootOrigin)
+    public Projectile InstantiateProjectile(Transform shootOrigin) // 슈루탄 생성
     {
         return Instantiate(projectilePrefab, shootOrigin.position + shootOrigin.forward * 0.7f, Quaternion.identity).GetComponent<Projectile>();
     }

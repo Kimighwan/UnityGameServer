@@ -6,6 +6,9 @@ using System.Net;
 using UnityEngine;
 using Unity.VisualScripting;
 
+// 서버 관리 클래스
+// 서버에 필요한 모든 설정을 수행
+
 public class Server
 {
     public static int maxPlayer { get; private set; } // 플레이어 최대 입장 수
@@ -18,7 +21,7 @@ public class Server
     private static TcpListener tcpListener; // tcp 네트워크에서 클라이언트의 연결을 수신하는 클래스
     private static UdpClient udpListener; // udp 네트워크에서 클라이언트의 연결을 수신하는 클래스
 
-    public static void Start(int _maxPlayer, int _port) // 서버에 필요한 모든 설정을 수행
+    public static void Start(int _maxPlayer, int _port)  // 서버 시작시 필요한 설정
     {
         maxPlayer = _maxPlayer;
         port = _port;
@@ -39,7 +42,7 @@ public class Server
         Debug.Log($"포트 번호 : {port}로 서버 시작!!!");
     }
 
-
+                                                                 // tcpConnectionSocket으로 연결을 하면서 동시에 다른 연결을 하기 위한 함수
     private static void TcpConnectCallBack(IAsyncResult _result) // 매개변수의 IAsyncResult는 비동기 작업의 상태
     {
         TcpClient client = tcpListener.EndAcceptTcpClient(_result); // 비동기적으로 연결을 받고 통신을 위해 새로운 TcpClient를 생성
@@ -59,7 +62,8 @@ public class Server
         }
     }
 
-    private static void UDPReceiveCallback(IAsyncResult _result)
+                                                                    // 바로 위 TcpConnectCallBack과 같은 목적인 함수
+    private static void UDPReceiveCallback(IAsyncResult _result)    // 하지만 udp이기에 살짝 다릅니다.
     {
         try
         {
@@ -101,7 +105,7 @@ public class Server
         } 
     }
 
-    public static void SendUDPData(IPEndPoint clientEndPoint, Packet packet)
+    public static void SendUDPData(IPEndPoint clientEndPoint, Packet packet)    // UDP로 패킷 전송
     {
         try
         {
@@ -116,7 +120,7 @@ public class Server
         }
     }
 
-    private static void InitServerData()
+    private static void InitServerData()    // 서버 초기 설정
     {
         for (int i = 1; i <= maxPlayer; i++)
         {
@@ -125,7 +129,7 @@ public class Server
 
         packetHandlers = new Dictionary<int, PacketHandler>()   // 패킷을 받음
             {
-                {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
+                {(int)ClientPackets.init, ServerHandle.Init },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 {(int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
                 {(int)ClientPackets.playerThrowItem, ServerHandle.PlayerThrowItem },
@@ -133,7 +137,7 @@ public class Server
         Debug.Log("Init Packet");
     }
 
-    public static void Stop()
+    public static void Stop()   // 서버 닫기
     {
         tcpListener.Stop();
         udpListener.Close();
