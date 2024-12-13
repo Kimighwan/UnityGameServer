@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// 하고 싶은 행위를 Action 데이터형으로 구성된 리스트에 담아 여러 쓰레드를 사용하는 것 처럼 사용합니다.
 
 public class ThreadManager : MonoBehaviour
 {

@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine;
-using Unity.VisualScripting;
 
 // 서버 관리 클래스
 // 서버에 필요한 모든 설정을 수행
@@ -127,7 +125,7 @@ public class Server
             clients.Add(i, new Client(i));
         }
 
-        packetHandlers = new Dictionary<int, PacketHandler>()   // 패킷을 받음
+        packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 {(int)ClientPackets.init, ServerHandle.Init },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
