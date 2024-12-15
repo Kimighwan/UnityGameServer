@@ -6,6 +6,8 @@ using UnityEngine;
 // 패킷에서 Byte인 데이터들을 적절한 데이터형으로 읽습니다.
 // 읽은 데이터를 가지고 각 함수에서 하고자 하는 일을 처리합니다.
 
+// 클라이언트에서 데이터를 가져와 서버에서 해야할 일들
+
 public class ServerHandle
 {
     public static void Init(int fromClient, Packet packet) // 클라이언트 접속시 초기 설정값 수신

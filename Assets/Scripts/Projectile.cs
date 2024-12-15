@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
         StartCoroutine(ExplodeAfterTime()); // 10초 타이머
     }
 
-    private void FixedUpdate()  // 슈루탄 위치 프레임마다 계산하여 패킷 전송
+    private void FixedUpdate()  // 수루탄 위치 프레임마다 계산하여 패킷 전송
     {
         ServerSend.ProjectilePosition(this);
     }

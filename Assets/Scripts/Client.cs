@@ -53,7 +53,7 @@ public class Client
             ServerSend.Init(id, "Server Connect!");
         }
 
-        public void SendData(Packet packet) // 패킷 읽기
+        public void SendData(Packet packet) // 패킷 전송
         {
             try
             {

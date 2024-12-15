@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
         jumpSpeed *= Time.fixedDeltaTime;
     }
 
-
     public void Initialize(int _id, string _userName)   // 플레이어 초기 설정
     {
         this.id = _id;

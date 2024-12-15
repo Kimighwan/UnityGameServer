@@ -5,7 +5,7 @@ public class NetworkManager : MonoBehaviour
     public static NetworkManager instance; // 해당 스크립트 객체를 참조하는 전역 변수
 
     public GameObject playerPrefab;     // 플레이어 객체
-    public GameObject projectilePrefab; // 슈루탄 객체
+    public GameObject projectilePrefab; // 수류탄 객체
 
     public Transform[] randomSpawnPos;  // 리스폰 위치
     public Transform[] spawnPos;        // 초기 스폰 위치
